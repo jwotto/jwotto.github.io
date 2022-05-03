@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.39/Tone.js"></script>
+    <title>musicApp</title>
+</head>
+
+<body>
+
+    <header>
+        <h1 id="menu-titel">MELODY MAKER</h1>
+
+        <button id="menu-button"> ☰ </button>
+
+
+
+    </header>
+
+
+
+    <canvas id="canvas">
+
+    </canvas>
+
+
+    <footer>
+        <button id="play-button" onclick="PlaySound()">⏯️</button>
+
+        <b id="tempo-slider-icon-slow"> 🐢</b>
+
+        <b id="tempo-slider-icon-fast"> 🐇</b>
+        <input type="range" id="tempo-slider" name="points" min="20" max="140">
+
+    </footer>
+
+    <script src="canvas.js"></script>
+</body>
+
+</html>

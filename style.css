@@ -1,0 +1,114 @@
+* {
+    margin: 0;
+    padding: 0;
+
+
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-image: linear-gradient(to right, rgb(99, 99, 99), rgb(177, 177, 177));
+    width: 100%;
+    height: 40px;
+    padding: 0px;
+
+    color: white;
+
+
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+}
+
+#menu-button {
+    background-color: rgba(0, 0, 0, 0);
+    ;
+    color: white;
+    position: absolute;
+    border-style: none;
+    font-size: 30px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+
+
+
+}
+
+#menu-button:hover {
+    color: black;
+
+}
+
+#menu-titel {
+
+    width: 100%;
+    text-align: center;
+    position: absolute;
+}
+
+
+
+canvas {
+
+    border-width: 0px;
+    padding: 0px;
+    margin: 0;
+
+
+}
+
+footer {
+    background-image: linear-gradient(to right, rgb(99, 99, 99), rgb(177, 177, 177));
+    width: 100%;
+    height: 64px;
+    margin-top: -4px;
+}
+
+#play-button {
+    background-color: none;
+    position: absolute;
+    border-style: none;
+    font-size: 40px;
+    width: 0;
+
+
+    margin-top: 2px;
+    margin-left: 25%;
+    cursor: pointer;
+    text-align: center;
+}
+
+
+
+#play-button:hover {
+    filter: hue-rotate(30deg);
+}
+
+#tempo-slider {
+    position: absolute;
+    margin-top: 25px;
+    width: 25%;
+    margin-left: 50%;
+}
+
+#tempo-slider-icon-slow {
+    font-size: 30px;
+    color: black;
+    position: absolute;
+    margin-top: 5px;
+    width: 25%;
+    margin-left: calc(50% - 40px);
+}
+
+#tempo-slider-icon-fast {
+    font-size: 30px;
+    color: black;
+    position: absolute;
+    margin-top: 5px;
+    width: 25%;
+    margin-left: calc(75%);
+}
