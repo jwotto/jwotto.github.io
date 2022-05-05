@@ -7,13 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.39/Tone.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.4.1/lib/p5.js"></script>
     <title>musicApp</title>
 </head>
 
 <body>
 
     <header>
-        <h1 id="menu-titel">MELODY MAKER</h1>
+        <h1 id="menu-titel">Melody Maker</h1>
 
         <button id="menu-button"> ☰ </button>
 
@@ -22,11 +23,10 @@
     </header>
 
 
-
-    <canvas id="canvas">
-
-    </canvas>
-
+   <div id ="sketch-holder">
+        <canvas id="canvas">
+        </canvas>
+    </div>
 
     <footer>
         <b id="play-button" onclick="PlaySound()">⏯️</b>

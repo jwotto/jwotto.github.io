@@ -169,6 +169,23 @@ button.onclick = function playSound() {
 }
 
 
+/*
+function setup() {
+    var canvas = createCanvas(windowWidth, windowHeight-104);
+    canvas.parent('sketch-holder');
+  }
+
+function draw() {
+    background(220);
+    ellipse(mouseX,mouseY,80,80);
+    canvas.parent('sketch-holder');
+  }
+
+  function windowResized() {
+    resizeCanvas(windowWidth, windowHeight);
+  }
+
+*/
 
 
 
