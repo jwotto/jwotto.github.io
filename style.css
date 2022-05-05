@@ -70,10 +70,10 @@ footer {
 
 #play-button {
     background-color: none;
-    position: absolute;
+    position: fixed;
     border-style: none;
     font-size: 40px;
-    width: 0;
+    width: 50px;
 
 
     margin-top: 2px;
