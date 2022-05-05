@@ -1,22 +1,10 @@
-var melodyLength = 8;
-var melodyHeight = 10;
-
-var melody = [];
-
-var root = 60;
-
-var key = [440.00, 523.25, 587.33, 659.26, 783.99,
-    440.00 * 2, 523.25 * 2, 587.33 * 2, 659.26 * 2, 783.99 * 2,
-    440.00 * 4, 523.25 * 4, 587.33 * 4, 659.26 * 4, 783.99 * 4,
-    440.00 * 8, 523.25 * 8, 587.33 * 8, 659.26 * 8, 783.99 * 8
 
 
+var melody = { length: 16, height: 10, key: ["A2", "B2", "C3", "D3", "E3", "F3", "G3", "A3", "B3", "C4", "D4", "E4", "F4", "G4", "A4", "B4"] }
 
-];
+var notegrid = [];
 
 var playHead = false;
-
-
 
 //canvass size
 var canvas = document.querySelector('canvas');
@@ -24,20 +12,18 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight - 105;
 
 // grid size
-var blockWidth = canvas.width / melodyLength;
-var blockHeight = canvas.height / melodyHeight;
+var blockWidth = canvas.width / melody.length;
+var blockHeight = canvas.height / melody.height;
 
 //mouse cordinates
-var mouseX = 0;
-var mouseY = 0;
+var mouse = { x: 0, y: 0 }
 
 //get play button
 var button = document.querySelector('#play-button');
-var playClick = false;
 
 //get slider value
 var slider = document.getElementById("tempo-slider");
-var tempo = 0.2;
+
 
 // get canvas elements
 var c = document.getElementById("canvas");
@@ -47,128 +33,85 @@ var ctx = c.getContext("2d");
 const refreshRate = 1000 / 60;
 
 //synth tone.js elements
-const synth = new Tone.Synth();
-synth.toDestination();
-
-const synthB = new Tone.Synth();
-synthB.toDestination();
-
-
+const synth = new Tone.Synth().toDestination();
+const synthB = new Tone.Synth().toDestination();
 
 //setup
 createMelodyArray();
 drawGrid();
 
+window.setInterval(() => { drawLoop(); }, refreshRate);
 
 function drawLoop() {
-    //refresh brackground
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-
     drawGrid();
-
-    //mouse
-    ctx.fillStyle = "blue";
-    ctx.globalAlpha = 0.01
-    ctx.fillRect(mouseX - 10, mouseY - 10, 20, 20);
-    ctx.globalAlpha = 1;
 }
-
 
 // music loop
-Tone.Transport.scheduleRepeat(time => {
-    repeat(time);
-}, "16n");
-
-
+Tone.Transport.scheduleRepeat(time => { repeat(time); }, "16n");
 function repeat(time) {
-
-    for (let i = 0; i < melodyHeight; i++) {
-
-        // dit triggered nu 8 x
-        if (melody[playHead + (i * melodyLength)] == false) {
-
-            synth.triggerAttackRelease(key[melodyHeight - 1 - i], "16n", time);
-            var b = key[melodyHeight - 1 - i] / 4;
-            synthB.triggerAttackRelease(b, "16n", time);
+    for (let i = 0; i < melody.height; i++) {
+        if (notegrid[playHead + (i * melody.length)] == false) {
+            synth.triggerAttackRelease(melody.key[melody.height - 1 - i], "16n", time);
         }
     }
-
-    playHead = (playHead + 1) % melodyLength;
+    playHead = (playHead + 1) % melody.length;
 }
 
-
-
-
-//mouse cordiantes
-document.addEventListener('mousemove', (event) => {
-    mouseX = event.clientX;
-    mouseY = event.clientY - 40; //mousey - header
-});
-
-
-// refresh draw loop
-window.setInterval(() => {
-    drawLoop();
-}, refreshRate);
-
-
-//when canvas is  resized
-window.onresize = function (event) {
-    resizeCanvas();
-    drawGrid();
-};
 var colorOfset = 0;
 function drawGrid() {
 
-    for (let i = 0; i < melodyLength; i++) {
-        for (let j = 0; j < melodyHeight; j++) {
+    for (let i = 0; i < melody.length; i++) {
+        for (let j = 0; j < melody.height; j++) {
 
             ctx.beginPath();
 
             //color 4block
-            if ((i % 4) == 0) { ctx.fillStyle = "#cccccc"; } else { ctx.fillStyle = "#d9d9d9"; }
-
-            //color play head
-            if (i == ((playHead + (melodyLength - 1)) % melodyLength) && playClick === true) {
-                ctx.fillStyle = "hsl(" + (360 / melodyLength) * i + ",20%,70%)";
+            if ((i % 4) == 0) { ctx.fillStyle = "#cccccc"; } else {
+                ctx.fillStyle = "#d9d9d9";
             }
-
-            //color mouseover
-            if (((mouseX > (i * blockWidth)) && mouseX < ((i + 1) * blockWidth)) && ((mouseY > (j * blockHeight)) && mouseY < ((j + 1) * blockHeight))) {
+            //color play head
+            if (i == ((playHead + (melody.length - 1)) % melody.length) && playClick === true) {
+                ctx.fillStyle = "hsl(" + (360 / melody.length) * i + ",20%,70%)";
+            }
+            //when mouse is on block
+            if (((mouse.x > (i * blockWidth)) && mouse.x < ((i + 1) * blockWidth)) && ((mouse.y > (j * blockHeight)) && mouse.y < ((j + 1) * blockHeight))) {
                 ctx.globalAlpha = 0.5;
                 ctx.fillStyle = "grey";
             }
+            //get boom whacker make a function for this
+            var nColor = (360 - (j * (360 / 7)) % 360);
+            if (notegrid[(i + (j * melody.length))] == false) {
+                ctx.fillStyle = "hsl(" + nColor + ",100%,50%)";
+            }
 
-            // color note clicked
-            var nColor = (360 - (j * (360 / 5) + 160) % 360);
-            if (melody[(i + (j * melodyLength))] == false) { ctx.fillStyle = "hsl(" + nColor + ",100%,50%)"; }
-
-            //draw grid
+            //draw grid rect
             ctx.fillRect(i * blockWidth, j * blockHeight, blockWidth - 1, blockHeight - 1);
-
             ctx.globalAlpha = 1;
         }
     }
 
 }
 
-// resize grid elements
+//when canvas is  resized
+window.onresize = (event) => { resizeCanvas(); drawGrid(); };
+
 function resizeCanvas() {
     canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight - 105;
+    canvas.height = window.innerHeight - 105; //- header footer offset
 
-    blockWidth = canvas.width / melodyLength;
-    blockHeight = canvas.height / melodyHeight;
+    blockWidth = canvas.width / melody.length;
+    blockHeight = canvas.height / melody.height;
 }
 
 
 //get back array nummer on hover
 function getMelodyHoover() {
-    for (let i = 0; i < melodyLength; i++) {
-        for (let j = 0; j < melodyHeight; j++) {
-            if (((mouseX > (i * blockWidth)) && mouseX < ((i + 1) * blockWidth)) && ((mouseY > (j * blockHeight)) && mouseY < ((j + 1) * blockHeight))) {
-                return i + (j * melodyLength)
+    for (let i = 0; i < melody.length; i++) {
+        for (let j = 0; j < melody.height; j++) {
+            if (((mouse.x > (i * blockWidth)) && mouse.x < ((i + 1) * blockWidth)) && ((mouse.y > (j * blockHeight)) && mouse.y < ((j + 1) * blockHeight))) {
+                return i + (j * melody.length)
 
             }
         }
@@ -176,42 +119,45 @@ function getMelodyHoover() {
     return 0;
 }
 
+function createMelodyArray() {
+    for (let i = 0; i < melody.length; i++) {
+        for (let j = 0; j < melody.height; j++) {
+            notegrid.push("true");
+        }
+    }
+}
+
+
+//mouse cordiantes
+document.addEventListener('mousemove', (event) => { mouse.x = event.clientX; mouse.y = event.clientY - 40; });
 
 // when mouse is pressed
 canvas.onmousedown = function mouseChangeMelody() {
 
     // when clicked active note
-    if (melody[getMelodyHoover()] == false) {
-        melody[getMelodyHoover()] = !melody[getMelodyHoover()];
+    if (notegrid[getMelodyHoover()] == false) {
+        notegrid[getMelodyHoover()] = !notegrid[getMelodyHoover()];
     } else {
 
-
         //make the rest false for mono synth
-        var x = getMelodyHoover() % melodyLength;
-        for (let i = 0; i < melodyHeight; i++) {
-
-            melody[((x) + (i * melodyLength))] = true;
+        var x = getMelodyHoover() % melody.length;
+        for (let i = 0; i < melody.height; i++) {
+            notegrid[((x) + (i * melody.length))] = true;
         }
 
-        melody[getMelodyHoover()] = false;
-        var y = (getMelodyHoover() - x) / melodyLength;
+        notegrid[getMelodyHoover()] = false;
+        var y = (getMelodyHoover() - x) / melody.length;
 
         //play tone when clicked
-        synth.triggerAttackRelease(key[melodyHeight - 1 - y], "16n");
-        synthB.triggerAttackRelease(key[melodyHeight - 1 - y] / 4, "16n");
-
+        synth.triggerAttackRelease(melody.key[melody.height - 1 - y], "16n");
     }
-
 }
 
+slider.onchange = function changeTime() { Tone.Transport.bpm.value = slider.value; }
 
-
-
-
-
-
+//play button
+var playClick = false;
 button.onclick = function playSound() {
-
     if (playClick == false) {
         Tone.Transport.start();
         playClick = !playClick;
@@ -224,19 +170,8 @@ button.onclick = function playSound() {
 
 
 
-slider.onchange = function changeTime() {
 
-    Tone.Transport.bpm.value = slider.value;
-}
 
-function createMelodyArray() {
-    for (let i = 0; i < melodyLength; i++) {
-        for (let j = 0; j < melodyHeight; j++) {
-            melody.push("true");
-        }
-    }
-
-}
 
 
 
