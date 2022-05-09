@@ -13,10 +13,13 @@
 
 <body>
 
-    <header>
-        <h1 id="menu-titel">Melody Maker</h1>
+    <header id="header">
+        <h1 id="menu-titel">Techno Maker</h1>
 
         <button id="menu-button"> ☰ </button>
+
+        <button type="button" id="play-button" onclick="PlaySound()"> <img src="play-button.png" height="20"
+                width="25" /></button>
 
 
 
@@ -24,12 +27,10 @@
 
 
    <div id ="sketch-holder">
-        <canvas id="canvas">
-        </canvas>
+    
     </div>
 
-    <footer>
-        <b id="play-button" onclick="PlaySound()">⏯️</b>
+    <footer id="footer">
 
         <b id="tempo-slider-icon-slow"> 🐢</b>
 
@@ -37,8 +38,9 @@
         <input type="range" id="tempo-slider" name="points" min="20" max="140">
 
     </footer>
-
-    <script src="canvas.js"></script>
 </body>
+
+<script src="musicgrid.js"></script>
+    <script src="canvas.js"></script>
 
 </html>
