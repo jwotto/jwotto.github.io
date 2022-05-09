@@ -19,6 +19,7 @@ header {
     color: white;
 }
 
+
 #menu-button {
     background-color: rgba(0, 0, 0, 0);
     color: white;
@@ -73,12 +74,17 @@ header {
 }
 
 #menu-titel {
-
     width: 100%;
     text-align: center;
-    position: absolute;
+    position: fixed;
 }
 
+@media only screen and (max-width: 600px) {
+    #menu-titel {
+        width: 90%;
+        text-align: right;
+    }
+}
 
 
 canvas {
