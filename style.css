@@ -21,7 +21,23 @@ header {
 
 #menu-button {
     background-color: rgba(0, 0, 0, 0);
-    ;
+    color: white;
+        position: absolute;
+        border-style: none;
+        font-size: 30px;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        margin-top: -2px;
+    }
+    
+    #menu-button:hover {
+        color: grey;
+    
+    }
+    
+    #melody-button {
+        background-color: rgba(0, 0, 0, 0);
     color: white;
     position: absolute;
     border-style: none;
@@ -30,12 +46,28 @@ header {
     height: 40px;
     cursor: pointer;
     margin-top: -2px;
+    margin-left: 100px;
+    }
 
-
+#melody-button:hover {
+    color: grey;
 
 }
 
-#menu-button:hover {
+#bass-button {
+    background-color: rgba(0, 0, 0, 0);
+    color: white;
+    position: absolute;
+    border-style: none;
+    font-size: 30px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    margin-top: -2px;
+    margin-left: 70px;
+}
+
+#bass-button:hover {
     color: grey;
 
 }
@@ -68,7 +100,7 @@ footer {
 #play-button {
     position: fixed;
     margin-top: 5px;
-        margin-left: 60px;
+        margin-left: 40px;
     cursor: pointer;
 
 }

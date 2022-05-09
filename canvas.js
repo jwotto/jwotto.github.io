@@ -1,5 +1,7 @@
 //get DOM elelemnts
 var button = document.querySelector('#play-button');
+var mButton = document.querySelector('#melody-button');
+var bButton = document.querySelector('#bass-button');
 var slider = document.getElementById("tempo-slider");
 var header = document.getElementById("header");
 var footer = document.getElementById("footer");
@@ -10,13 +12,34 @@ var canvasWidth;
 
 var grid = { length: 8, height: 10, blockW: 0, blockH: 0 }
 block = [];
-var rhythem = { height: 3, kPatter: [], sPatter: [], hPatter: [] }
-var melody = { key: ["A2", "B2", "C3", "D3", "E3", "F3", "G3", "A3", "B3", "C4", "D4", "E4", "F4", "G4", "A4", "B4"], pattern: [] }
-var bass = { key: ["A2", "B2", "C3", "D3", "E3", "F3", "G3", "A3", "B3", "C4", "D4", "E4", "F4", "G4", "A4", "B4"], pattern: [] }
+var rhythem = { height: 3, kPattern: [1, 0, 0, 0, 1, 0, 0, 0], sPattern: [0, 0, 0, 0, 0, 0, 0, 0], hPattern: [0, 0, 1, 0, 0, 0, 1, 0] }
+var melody = { key: ["A3", "B3", "C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"], pattern: [] }
+var bass = { key: ["A1", "B1", "C2", "D2", "E2", "F2", "G2", "A2", "B2", "C3"], pattern: [] }
 var playHead = 0;
 
 //synth tone.js elements
-const synth = new Tone.Synth().toDestination();
+const synth = new Tone.Synth();
+const synthGain = new Tone.Gain(0.7).toDestination();
+synth.connect(synthGain);
+
+const bfilter = new Tone.Filter(300, "lowpass").toDestination();
+const bSynth = new Tone.Synth();
+bSynth.oscillator.type = "square";
+const bSynthGain = new Tone.Gain(0.5).toDestination();
+
+bSynth.connect(bfilter);
+
+const kick = new Tone.MembraneSynth().toDestination();
+
+const snare = new Tone.MembraneSynth().toDestination();
+const snareNoise = new Tone.NoiseSynth().toDestination();
+
+
+const noisefilter = new Tone.Filter(9000, "highpass").toDestination();
+const noise = new Tone.NoiseSynth();
+noise.connect(noisefilter);
+
+
 
 
 function setup() {
@@ -31,13 +54,9 @@ function setup() {
 
 
 function draw() {
-    background((255 - ((playHead) % 2) * 200));
+    background(255);
     drawGrid();
     drawBlocks();
-
-    ellipse(mouseX, mouseY, 30, 30);
-   // text(mouseY, windowWidth / 2, windowHeight / 2);
-
 }
 
 // music loop
@@ -46,8 +65,16 @@ function repeat(time) {
 
     if (melody.pattern[playHead] >= 0) {
         synth.triggerAttackRelease(melody.key[melody.pattern[playHead]], "16n", time);
-}
 
+    }
+
+    if (bass.pattern[playHead] >= 0) {
+        bSynth.triggerAttackRelease(bass.key[bass.pattern[playHead]], "16n", time);
+    }
+
+    if (rhythem.kPattern[playHead] == true) { kick.triggerAttackRelease("A1", "16n", time); }
+    if (rhythem.hPattern[playHead] == true) { noise.triggerAttackRelease("32n", time); }
+    if (rhythem.sPattern[playHead] == true) { snare.triggerAttackRelease("D2", "16n", time); snareNoise.triggerAttackRelease("16n", time); }
     playHead = (playHead + 1) % grid.length;
 }
 
@@ -56,22 +83,28 @@ function repeat(time) {
 var playClick = false;
 button.onclick = function playSound() {
     if (playClick == false) {
+        playHead = 0;
         Tone.Transport.start();
         playClick = !playClick;
     } else {
-        playHead = 0;
         playClick = !playClick;
         Tone.Transport.stop();
+        playHead = 0;
     }
 }
+
+var SelectorBassMelody = false;
+
+bButton.onclick = function () { SelectorBassMelody = false; }
+mButton.onclick = function () { SelectorBassMelody = true; }
 
 function setPatterns() {
     for (var i = 0; i < grid.length; i++) {
         melody.pattern.push(-1);
         bass.pattern.push(-1);
-        rhythem.kPatter.push(false);
-        rhythem.sPatter.push(false);
-        rhythem.hPatter.push(false);
+        rhythem.kPattern.push(false);
+        rhythem.sPattern.push(false);
+        rhythem.hPattern.push(false);
     }
 }
 
