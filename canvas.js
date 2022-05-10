@@ -12,31 +12,61 @@ var canvasWidth;
 
 var grid = { length: 8, height: 10, blockW: 0, blockH: 0 }
 block = [];
-var rhythem = { height: 3, kPattern: [1, 0, 0, 0, 1, 0, 0, 0], sPattern: [0, 0, 0, 0, 0, 0, 0, 0], hPattern: [0, 0, 1, 0, 0, 0, 1, 0] }
+var rhythem = { height: 3, kPattern: [1, 0, 0, 0, 1, 0, 0, 0], sPattern: [0, 0, 0, 0, 1, 0, 0, 0], hPattern: [0, 0, 1, 0, 0, 0, 1, 0] }
 var melody = { key: ["A3", "B3", "C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"], pattern: [] }
 var bass = { key: ["A1", "B1", "C2", "D2", "E2", "F2", "G2", "A2", "B2", "C3"], pattern: [] }
 var playHead = 0;
 
 //synth tone.js elements
-const synth = new Tone.Synth();
-const synthGain = new Tone.Gain(0.7).toDestination();
-synth.connect(synthGain);
+
+
+const synth = new Tone.Synth({
+    envelope : {
+        attack: 0.02,
+        decay:0.8
+    },
+    portamento : 0.08,
+    volume: -10
+  }).toDestination();
 
 const bfilter = new Tone.Filter(300, "lowpass").toDestination();
-const bSynth = new Tone.Synth();
+const bSynth = new Tone.Synth({
+    volume: -5
+});
 bSynth.oscillator.type = "square";
-const bSynthGain = new Tone.Gain(0.5).toDestination();
-
 bSynth.connect(bfilter);
 
-const kick = new Tone.MembraneSynth().toDestination();
+const kick = new Tone.MembraneSynth({
+    envelope : {
+        decay:0.8
+    },
+    pitchDecay : 0.04,
+    volume: -8
+}).toDestination();
 
-const snare = new Tone.MembraneSynth().toDestination();
-const snareNoise = new Tone.NoiseSynth().toDestination();
+const snare = new Tone.MembraneSynth({
+    envelope : {
+        decay:0.03
+    },
+    pitchDecay : 0.02,
+    volume: -8
+}).toDestination();
+
+const snareNoise = new Tone.NoiseSynth({
+    envelope : {
+        decay:0.12
+    },
+    volume: -12
+}).toDestination();
 
 
 const noisefilter = new Tone.Filter(9000, "highpass").toDestination();
-const noise = new Tone.NoiseSynth();
+const noise = new Tone.NoiseSynth({
+    envelope : {
+        decay:0.3
+    },
+    volume: -12
+});
 noise.connect(noisefilter);
 
 
@@ -74,7 +104,7 @@ function repeat(time) {
 
     if (rhythem.kPattern[playHead] == true) { kick.triggerAttackRelease("A1", "16n", time); }
     if (rhythem.hPattern[playHead] == true) { noise.triggerAttackRelease("32n", time); }
-    if (rhythem.sPattern[playHead] == true) { snare.triggerAttackRelease("D2", "16n", time); snareNoise.triggerAttackRelease("16n", time); }
+    if (rhythem.sPattern[playHead] == true) { snare.triggerAttackRelease("E3", "16n", time); snareNoise.triggerAttackRelease("16n", time); }
     playHead = (playHead + 1) % grid.length;
 }
 
@@ -129,24 +159,4 @@ function setScreen() {
         screenOfset = 0;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
