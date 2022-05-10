@@ -45,13 +45,13 @@ function drawBlocks() {
     for (var i = 0; i < grid.length; i++) {
         //draww bass pattern
         if (bass.pattern[i] >= 0) {
-            fill(40)
+            fill(0, 0, 255, 125)
             rect(GridLeftMargin + i * grid.blockW, (grid.height - 1 - bass.pattern[i]) * grid.blockH, grid.blockW, grid.blockH, 10);
             noFill();
         }
         //draw melody pattern
         if (melody.pattern[i] >= 0) {
-            fill(80)
+            fill(255, 0, 0, 125)
             rect(GridLeftMargin + i * grid.blockW, (grid.height - 1 - melody.pattern[i]) * grid.blockH, grid.blockW, grid.blockH, 10);
             noFill();
         }

@@ -13,8 +13,8 @@ var canvasWidth;
 
 var grid = { length: 8, height: 8, blockW: 0, blockH: 0 }
 block = [];
-var rhythem = { height: 3, kPattern: [0, 0, 0, 0, 0, 0, 0, 0], sPattern: [0, 0, 0, 0, 0, 0, 0, 0], hPattern: [0, 0, 0, 0, 0, 0, 0, 0] }
-var melody = { key: ["A2", "B2", "C3", "D3", "E3", "F3", "G3", "A3", "B3", "C4"], pattern: [] }
+var rhythem = { height: 3, kPattern: [1, 0, 0, 0, 1, 0, 0, 0], sPattern: [0, 0, 0, 0, 0, 0, 0, 0], hPattern: [0, 0, 1, 0, 0, 0, 1, 0] }
+var melody = { key: ["A2", "B2", "C3", "D3", "E3", "F3", "G3", "A3", "B3", "C4"], pattern: [0, -1, -1, 1, -1, 2] }
 var bass = { key: ["A1", "B1", "C2", "D2", "E2", "F2", "G2", "A2", "B2", "C3"], pattern: [] }
 var playHead = 0;
 
@@ -45,22 +45,22 @@ const synth = new Tone.MonoSynth({
         'rolloff': -24
     },
     'envelope': {
-        'attack': 0.005,
+        'attack': 0.0,
         'decay': 0.1,
-        'sustain': 0.9,
-        'release': 2
+        'sustain': 1,
+        'release': 0.1
     },
     'filterEnvelope': {
-        'attack': 0.05,
-        'decay': 0.2,
-        'sustain': 0.5,
-        'release': 1,
+        'attack': 0,
+        'decay': 0.3,
+        'sustain': 0.2,
+        'release': 0.2,
         'baseFrequency': 100,
         'octaves': 7,
         'exponent': 8
     },
-    "portamento": 0.08,
-    'volume': -24
+    "portamento": 0.1,
+    'volume': -18
 
 });
 
@@ -125,7 +125,7 @@ function draw() {
     background(255);
     drawGrid();
     drawBlocks();
-    synth.filterEnvelope.exponent = sliderFx.value / 20;
+    synth.filterEnvelope.exponent = sliderFx.value / 30;
 }
 
 // music loop

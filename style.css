@@ -39,7 +39,7 @@ header {
     
     #melody-button {
         background-color: rgba(0, 0, 0, 0);
-    color: white;
+    color: rgba(255, 0, 0, 125);
     position: absolute;
     border-style: none;
     font-size: 30px;
@@ -57,7 +57,7 @@ header {
 
 #bass-button {
     background-color: rgba(0, 0, 0, 0);
-    color: white;
+    color: rgba(0, 0, 255, 125);
     position: absolute;
     border-style: none;
     font-size: 30px;
