@@ -35,7 +35,7 @@ function drawLines() {
 
     for (var j = 0; j < grid.height + rhythem.height; j++) {
         strokeWeight(1);
-        if (j == 10) { strokeWeight(5); }
+        if (j == grid.height) { strokeWeight(5); }
         line(GridLeftMargin, j * grid.blockH, screenWidth, j * grid.blockH);
     }
 
@@ -81,7 +81,7 @@ function drawPlayhead() {
 
 function mouseClicked() {
     var mouseOnNoteGrid = (mouseX > screenOfset / 2 && mouseX < (windowWidth - screenOfset / 2) && (mouseY > 0) && mouseY < canvasHeight - (3 * grid.blockH))
-    var mouseOnRhytemGrid = (mouseX > screenOfset / 2 && mouseX < (windowWidth - screenOfset / 2) && (mouseY > (10 * grid.blockH)) && mouseY < canvasHeight)
+    var mouseOnRhytemGrid = (mouseX > screenOfset / 2 && mouseX < (windowWidth - screenOfset / 2) && (mouseY > (grid.height * grid.blockH)) && mouseY < canvasHeight)
     var sameNoteClickedMelody = (melody.pattern[quantizeGridPosX(mouseX)] == quantizeGridPosY(mouseY) - 3)
     var sameNoteClickedBass = (bass.pattern[quantizeGridPosX(mouseX)] == quantizeGridPosY(mouseY) - 3)
     if (mouseOnNoteGrid) {

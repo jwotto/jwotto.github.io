@@ -3,6 +3,7 @@ var button = document.querySelector('#play-button');
 var mButton = document.querySelector('#melody-button');
 var bButton = document.querySelector('#bass-button');
 var slider = document.getElementById("tempo-slider");
+var sliderFx = document.getElementById("fx-slider");
 var header = document.getElementById("header");
 var footer = document.getElementById("footer");
 
@@ -10,24 +11,61 @@ var screenOfset;
 var canvasHeight;
 var canvasWidth;
 
-var grid = { length: 8, height: 10, blockW: 0, blockH: 0 }
+var grid = { length: 8, height: 8, blockW: 0, blockH: 0 }
 block = [];
-var rhythem = { height: 3, kPattern: [1, 0, 0, 0, 1, 0, 0, 0], sPattern: [0, 0, 0, 0, 1, 0, 0, 0], hPattern: [0, 0, 1, 0, 0, 0, 1, 0] }
-var melody = { key: ["A3", "B3", "C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"], pattern: [] }
+var rhythem = { height: 3, kPattern: [0, 0, 0, 0, 0, 0, 0, 0], sPattern: [0, 0, 0, 0, 0, 0, 0, 0], hPattern: [0, 0, 0, 0, 0, 0, 0, 0] }
+var melody = { key: ["A2", "B2", "C3", "D3", "E3", "F3", "G3", "A3", "B3", "C4"], pattern: [] }
 var bass = { key: ["A1", "B1", "C2", "D2", "E2", "F2", "G2", "A2", "B2", "C3"], pattern: [] }
 var playHead = 0;
 
 //synth tone.js elements
 
+const freeverb = new Tone.Freeverb({
 
-const synth = new Tone.Synth({
-    envelope : {
-        attack: 0.02,
-        decay:0.8
+    dampening: 400,
+    roomSize: 0.98,
+    wet: 1
+
+}).toDestination();
+
+const filterr = new Tone.Filter(800, "highpass").toDestination();
+
+
+
+const synth = new Tone.MonoSynth({
+
+
+
+    'oscillator': {
+        'type': 'square'
     },
-    portamento : 0.08,
-    volume: -10
-  }).toDestination();
+    'filter': {
+        'Q': 6,
+        'type': 'lowpass',
+        'rolloff': -24
+    },
+    'envelope': {
+        'attack': 0.005,
+        'decay': 0.1,
+        'sustain': 0.9,
+        'release': 2
+    },
+    'filterEnvelope': {
+        'attack': 0.05,
+        'decay': 0.2,
+        'sustain': 0.5,
+        'release': 1,
+        'baseFrequency': 100,
+        'octaves': 7,
+        'exponent': 8
+    },
+    "portamento": 0.08,
+    'volume': -24
+
+});
+
+synth.chain(filterr, freeverb, Tone.Destination);
+//synth.toDestination();
 
 const bfilter = new Tone.Filter(400, "lowpass").toDestination();
 const bSynth = new Tone.Synth({
@@ -73,7 +111,7 @@ noise.connect(noisefilter);
 
 
 function setup() {
-    frameRate(60);
+    frameRate(30);
     var canvas = createCanvas(windowWidth, windowHeight - footer.offsetHeight - header.offsetHeight);
     canvas.parent('sketch-holder');
     setPatterns();
@@ -87,6 +125,7 @@ function draw() {
     background(255);
     drawGrid();
     drawBlocks();
+    synth.filterEnvelope.exponent = sliderFx.value / 20;
 }
 
 // music loop
@@ -139,7 +178,10 @@ function setPatterns() {
 }
 
 
-slider.onchange = function changeTime() { Tone.Transport.bpm.value = slider.value; }
+slider.onchange = function changeSlider() { Tone.Transport.bpm.value = slider.value; }
+
+
+
 
 
 function windowResized() {

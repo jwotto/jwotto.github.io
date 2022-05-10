@@ -116,34 +116,46 @@ footer {
     filter: grayscale(50);
 }
 
-#tempo-slider {
-    position: fixed;
-    margin-top: 25px;
-    width: 50%;
-    margin-left: 25%;
--webkit-appearance: none;
-    background: #111;
-    outline: none;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: inset 0 0 5px rgba(0, 0, 0, 1);
-}
-
-
 #tempo-slider-icon-slow {
+    position: fixed;
     font-size: 30px;
     color: white;
         position: fixed;
         margin-top: 10px;
     width: 25%;
-    margin-left: calc(25% - 30px);
+    margin-left: calc(55% - 20px);
 }
 
 #tempo-slider-icon-fast {
+    position: fixed;
     font-size: 30px;
     color: white;
         position: fixed;
         margin-top: 10px;
     width: 25%;
-    margin-left: calc(75% + 20px);
+    margin-left: calc(90% + 15px);
+    }
+    
+    #tempo-slider {
+        position: fixed;
+        margin-top: 25px;
+        width: 35%;
+        margin-left: 55%;
+    }
+    
+    #fx-slider {
+        position: fixed;
+        margin-top: 25px;
+        width: 40%;
+        margin-left: 5%;
+    }
+    
+    
+    .slider {
+        -webkit-appearance: none;
+        background: #111;
+        outline: none;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: inset 0 0 5px rgba(0, 0, 0, 1);
 }
