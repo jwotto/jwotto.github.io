@@ -22,13 +22,13 @@ var playHead = 0;
 
 const freeverb = new Tone.Freeverb({
 
-    dampening: 400,
-    roomSize: 0.98,
-    wet: 1
+    "dampening": 500,
+    "roomSize": 0.9,
+    "wet": 1
 
 }).toDestination();
 
-const filterr = new Tone.Filter(800, "highpass").toDestination();
+const filterr = new Tone.Filter(1000, "highpass").toDestination();
 
 
 
@@ -75,35 +75,35 @@ bSynth.oscillator.type = "square";
 bSynth.connect(bfilter);
 
 const kick = new Tone.MembraneSynth({
-    envelope : {
+    "envelope": {
         decay:0.8
     },
-    pitchDecay : 0.04,
-    volume: -8
+    "pitchDecay": 0.04,
+    "volume": -8
 }).toDestination();
 
 const snare = new Tone.MembraneSynth({
-    envelope : {
-        decay:0.03
+    "envelope": {
+        "decay": 0.03
     },
-    pitchDecay : 0.02,
-    volume: -8
+    "pitchDecay": 0.02,
+    "volume": -10
 }).toDestination();
 
 const snareNoise = new Tone.NoiseSynth({
-    envelope : {
-        decay:0.12
+    "envelope": {
+        "decay": 0.12
     },
-    volume: -12
+    "volume": -12
 }).toDestination();
 
 
 const noisefilter = new Tone.Filter(9000, "highpass").toDestination();
 const noise = new Tone.NoiseSynth({
-    envelope : {
-        decay:0.3
+    "envelope": {
+        "decay": 0.3
     },
-    volume: -12
+    "volume": -12
 });
 noise.connect(noisefilter);
 
