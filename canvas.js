@@ -20,13 +20,7 @@ var playHead = 0;
 
 //synth tone.js elements
 
-const freeverb = new Tone.Freeverb({
 
-    "dampening": 500,
-    "roomSize": 0.9,
-    "wet": 1
-
-}).toDestination();
 
 const filterr = new Tone.Filter(1000, "highpass").toDestination();
 
@@ -48,23 +42,23 @@ const synth = new Tone.MonoSynth({
         'attack': 0.0,
         'decay': 0.1,
         'sustain': 1,
-        'release': 0.1
+        'release': 0.5
     },
     'filterEnvelope': {
         'attack': 0,
         'decay': 0.3,
         'sustain': 0.2,
-        'release': 0.2,
+        'release': 0.5,
         'baseFrequency': 100,
         'octaves': 7,
         'exponent': 8
     },
     "portamento": 0.1,
-    'volume': -18
+    'volume': -20
 
 });
 
-synth.chain(filterr, freeverb, Tone.Destination);
+synth.chain(filterr, Tone.Destination);
 //synth.toDestination();
 
 const bfilter = new Tone.Filter(400, "lowpass").toDestination();
