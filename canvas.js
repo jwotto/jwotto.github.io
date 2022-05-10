@@ -29,9 +29,9 @@ const synth = new Tone.Synth({
     volume: -10
   }).toDestination();
 
-const bfilter = new Tone.Filter(300, "lowpass").toDestination();
+const bfilter = new Tone.Filter(400, "lowpass").toDestination();
 const bSynth = new Tone.Synth({
-    volume: -5
+    volume: -2
 });
 bSynth.oscillator.type = "square";
 bSynth.connect(bfilter);
