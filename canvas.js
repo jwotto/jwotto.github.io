@@ -14,24 +14,26 @@ var canvasWidth;
 var grid = { length: 8, height: 8, blockW: 0, blockH: 0 }
 block = [];
 var rhythem = { height: 3, kPattern: [1, 0, 0, 0, 1, 0, 0, 0], sPattern: [0, 0, 0, 0, 0, 0, 0, 0], hPattern: [0, 0, 1, 0, 0, 0, 1, 0] }
-var melody = { key: ["A2", "B2", "C3", "D3", "E3", "F3", "G3", "A3", "B3", "C4"], pattern: [0, -1, -1, 1, -1, 2] }
+var melody = { key: ["A3", "B3", "C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"], pattern: [0, -1, -1, 1, -1, 2] }
 var bass = { key: ["A1", "B1", "C2", "D2", "E2", "F2", "G2", "A2", "B2", "C3"], pattern: [] }
 var playHead = 0;
 
-//synth tone.js elements
 
+//fx
+const distortion = new Tone.Distortion (1 ).toDestination();
+const ffilter = new Tone.Filter(9000, "highpass").toDestination();
+feedbackDelay = new Tone.FeedbackDelay({
+    'delayTime' : '8n',
+    'feedback' : 0.1,
+    'maxDelay' : 2,
+    'wet' : 0.2
 
+}).toDestination();
 
-const filterr = new Tone.Filter(1000, "highpass").toDestination();
-
-
-
+//synths
 const synth = new Tone.MonoSynth({
-
-
-
     'oscillator': {
-        'type': 'square'
+        'type': 'sawtooth'
     },
     'filter': {
         'Q': 6,
@@ -40,66 +42,102 @@ const synth = new Tone.MonoSynth({
     },
     'envelope': {
         'attack': 0.0,
-        'decay': 0.1,
-        'sustain': 1,
-        'release': 0.5
+        'decay': 0.5,
+        'sustain': 0,
+        'release': 0.
     },
     'filterEnvelope': {
         'attack': 0,
-        'decay': 0.3,
-        'sustain': 0.2,
-        'release': 0.5,
+        'decay': 0.5,
+        'sustain': 0,
+        'release': 0,
         'baseFrequency': 100,
         'octaves': 7,
         'exponent': 8
     },
-    "portamento": 0.1,
-    'volume': -20
+    "portamento": 0.08,
+    'volume': -34
 
 });
 
-synth.chain(filterr, Tone.Destination);
+synth.chain(feedbackDelay,distortion,ffilter, Tone.Destination);
 //synth.toDestination();
 
-const bfilter = new Tone.Filter(400, "lowpass").toDestination();
-const bSynth = new Tone.Synth({
-    volume: -2
+
+const bSynth = new Tone.MonoSynth({
+    'oscillator': {
+        'type': 'sawtooth'
+    },
+    'filter': {
+        'Q': 6,
+        'type': 'lowpass',
+        'rolloff': -24
+    },
+    'envelope': {
+        'attack': 0.0,
+        'decay': 0.5,
+        'sustain': 0,
+        'release': 0.
+    },
+    'filterEnvelope': {
+        'attack': 0,
+        'decay': 0.5,
+        'sustain': 0,
+        'release': 0,
+        'baseFrequency': 100,
+        'octaves': 7,
+        'exponent': 8
+    },
+    "portamento": 0.08,
+    'volume': -34
+
 });
-bSynth.oscillator.type = "square";
-bSynth.connect(bfilter);
+bSynth.chain(distortion, Tone.Destination);
 
 const kick = new Tone.MembraneSynth({
     "envelope": {
-        decay:0.8
+        'attack': 0.0,
+        'decay': 0.2,
+        'sustain': 0,
+        'release': 0.
     },
     "pitchDecay": 0.04,
-    "volume": -8
+    "volume": -10
 }).toDestination();
 
 const snare = new Tone.MembraneSynth({
     "envelope": {
-        "decay": 0.03
+        'attack': 0.0,
+        'decay': 0.2,
+        'sustain': 0,
+        'release': 0.
     },
     "pitchDecay": 0.02,
-    "volume": -10
+    "volume": -16
 }).toDestination();
 
 const snareNoise = new Tone.NoiseSynth({
     "envelope": {
-        "decay": 0.12
+        'attack': 0.0,
+        'decay': 0.15,
+        'sustain': 0,
+        'release': 0.
     },
-    "volume": -12
+    "volume": -16
 }).toDestination();
 
 
-const noisefilter = new Tone.Filter(9000, "highpass").toDestination();
 const noise = new Tone.NoiseSynth({
     "envelope": {
-        "decay": 0.3
+        'attack': 0.0,
+        'decay': 0.1,
+        'sustain': 0,
+        'release': 0.
+        
     },
-    "volume": -12
+    "volume": -14
 });
-noise.connect(noisefilter);
+noise.connect(ffilter);
 
 
 
@@ -120,6 +158,7 @@ function draw() {
     drawGrid();
     drawBlocks();
     synth.filterEnvelope.exponent = sliderFx.value / 30;
+    bSynth.filterEnvelope.exponent = sliderFx.value / 30;
 }
 
 // music loop
@@ -156,7 +195,7 @@ button.onclick = function playSound() {
     }
 }
 
-var SelectorBassMelody = false;
+var SelectorBassMelody = true;
 
 bButton.onclick = function () { SelectorBassMelody = false; }
 mButton.onclick = function () { SelectorBassMelody = true; }
@@ -172,7 +211,11 @@ function setPatterns() {
 }
 
 
-slider.onchange = function changeSlider() { Tone.Transport.bpm.value = slider.value; }
+slider.onchange = function changeSlider() { 
+    Tone.Transport.bpm.value = slider.value;
+    feedbackDelay.delayTime = "8n"
+
+}
 
 
 function windowResized() {
