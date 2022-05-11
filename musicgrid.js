@@ -86,6 +86,7 @@ function drawPlayhead() {
 
 
 function mouseClicked() {
+
     var mouseOnNoteGrid = (mouseX > screenOfset / 2 && mouseX < (windowWidth - screenOfset / 2) && (mouseY > 0) && mouseY < canvasHeight - (3 * grid.blockH))
     var mouseOnRhytemGrid = (mouseX > screenOfset / 2 && mouseX < (windowWidth - screenOfset / 2) && (mouseY > (grid.height * grid.blockH)) && mouseY < canvasHeight)
     var sameNoteClickedMelody = (melody.pattern[quantizeGridPosX(mouseX)] == quantizeGridPosY(mouseY) - 3)

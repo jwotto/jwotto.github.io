@@ -9,8 +9,10 @@ to do:
 - [x] add bass
 - [x] add rhythem
 - [x] add fx
-- [ ] change kick snare look
-- [ ] add delay slider
+- [ ] sidechain heck for bass  --- if kick is placed on same note make less loud
+- [ ] make hihat on 2 and 4 open hihat
+
+- [ ] make a design for pc/ tablet / phone
 
 - [ ] clean up code
 - [ ] bug fix
