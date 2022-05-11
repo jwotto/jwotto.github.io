@@ -10,6 +10,7 @@ function setGrid() {
     screenWidth = windowWidth - GridLeftMargin;
 
     //push the melody and rhytem arrays
+   // ellipseMode(CORNER);
 }
 
 function drawGrid() {
@@ -44,29 +45,34 @@ function drawLines() {
 function drawBlocks() {
     for (var i = 0; i < grid.length; i++) {
         //draww bass pattern
+        let blockPosX = GridLeftMargin + i * grid.blockW;
+
+
         if (bass.pattern[i] >= 0) {
             fill(0, 0, 255, 125)
-            rect(GridLeftMargin + i * grid.blockW, (grid.height - 1 - bass.pattern[i]) * grid.blockH, grid.blockW, grid.blockH, 10);
+            rect(blockPosX, (grid.height - 1 - bass.pattern[i]) * grid.blockH, grid.blockW, grid.blockH, 10);
             noFill();
         }
         //draw melody pattern
         if (melody.pattern[i] >= 0) {
             fill(255, 0, 0, 125)
-            rect(GridLeftMargin + i * grid.blockW, (grid.height - 1 - melody.pattern[i]) * grid.blockH, grid.blockW, grid.blockH, 10);
+            rect(blockPosX, (grid.height - 1 - melody.pattern[i]) * grid.blockH, grid.blockW, grid.blockH, 10);
             noFill();
         }
         //draw rhytem pattern
+        var blockCenter = blockPosX + (grid.blockW * 0.5);
+
         if (rhythem.kPattern[i] == true) {
             fill(20)
-            rect(GridLeftMargin + i * grid.blockW, (grid.height + 2) * grid.blockH, grid.blockW, grid.blockH, 10);
+            rect((blockPosX), (grid.height + 2) * grid.blockH, grid.blockW, grid.blockH, 10);
         }
         if (rhythem.hPattern[i] == true) {
             fill(20)
-            rect(GridLeftMargin + i * grid.blockW, (grid.height) * grid.blockH, grid.blockW, grid.blockH, 10);
+            triangle(blockPosX, (grid.height + 1) * grid.blockH, blockPosX + grid.blockW, (grid.height + 1) * grid.blockH, blockCenter, (grid.height) * grid.blockH);
         }
         if (rhythem.sPattern[i] == true) {
             fill(20)
-            rect(GridLeftMargin + i * grid.blockW, (grid.height + 1) * grid.blockH, grid.blockW, grid.blockH, 10);
+            ellipse(blockCenter, ((grid.height + 1) * grid.blockH) + grid.blockH * 0.5, grid.blockH * 0.8, grid.blockH * 0.8, 10);
         }
     }
 }

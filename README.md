@@ -9,5 +9,8 @@ to do:
 - [x] add bass
 - [x] add rhythem
 - [x] add fx
+- [ ] change kick snare look
+- [ ] add delay slider
+
 - [ ] clean up code
 - [ ] bug fix
