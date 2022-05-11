@@ -175,9 +175,6 @@ function setPatterns() {
 slider.onchange = function changeSlider() { Tone.Transport.bpm.value = slider.value; }
 
 
-
-
-
 function windowResized() {
     setScreen();
     setGrid();
