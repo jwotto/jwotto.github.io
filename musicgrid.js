@@ -80,7 +80,7 @@ function drawBlocks() {
 function drawPlayhead() {
     if (playClick) {
         fill(100);
-        rect(GridLeftMargin + ((((playHead + grid.length - 1) % grid.length)) * grid.blockW), 0, grid.blockW, canvasHeight);
+        rect(GridLeftMargin + ((((playHead + (grid.length - 1)) % grid.length)) * grid.blockW), 0, grid.blockW, canvasHeight);
     }
 }
 

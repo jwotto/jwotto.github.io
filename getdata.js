@@ -5,13 +5,10 @@ function getParameter(parameterName) {
     return parameter.get(parameterName);
 }
 
-function setUrlParameter() {
+function getUrlParameter() {
     var gridWidth = getParameter("w")
-    if (gridWidth != null) {
+    if (gridWidth != null && gridWidth >= 4 && gridWidth <= 16) {
         grid.length = gridWidth;
     }
 }
-
-
-
 

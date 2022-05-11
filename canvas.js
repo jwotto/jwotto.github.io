@@ -144,9 +144,9 @@ noise.connect(ffilter);
 
 function setup() {
     frameRate(30);
-    setUrlParameter();
     var canvas = createCanvas(windowWidth, windowHeight - footer.offsetHeight - header.offsetHeight);
     canvas.parent('sketch-holder');
+    getUrlParameter();
     setPatterns();
     setScreen();
     setGrid();
