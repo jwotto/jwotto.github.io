@@ -9,10 +9,19 @@ to do:
 - [x] add bass
 - [x] add rhythem
 - [x] add fx
-- [ ] sidechain heck for bass  --- if kick is placed on same note make less loud
-- [ ] make hihat on 2 and 4 open hihat
+- [ ] add left and right section in body instead of big canvas
+- [ ] scale body with javascript
+
+
+
 
 - [ ] make a design for pc/ tablet / phone
 
+
 - [ ] clean up code
 - [ ] bug fix
+
+extra's
+- [ ] sidechain hack for bass  --- if kick is placed on same note make less loud
+- [ ] make hihat on 2 and 4 open hihat
+- [ ] save array to a link
