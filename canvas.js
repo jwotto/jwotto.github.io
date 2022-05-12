@@ -6,6 +6,9 @@ var slider = document.getElementById("tempo-slider");
 var sliderFx = document.getElementById("fx-slider");
 var header = document.getElementById("header");
 var footer = document.getElementById("footer");
+var screen = document.getElementById("sketch-holder");
+var sidebarRight = document.getElementById("sidebarright")
+var sidebarLeft = document.getElementById("sidebarleft")
 
 var screenOfset;
 var canvasHeight;
@@ -145,6 +148,7 @@ noise.connect(ffilter);
 function setup() {
     frameRate(30);
     var canvas = createCanvas(windowWidth, windowHeight - footer.offsetHeight - header.offsetHeight);
+
     canvas.parent('sketch-holder');
     getUrlParameter();
     setPatterns();
@@ -155,7 +159,7 @@ function setup() {
 
 
 function draw() {
-    background(255);
+   // background(255);
     drawGrid();
     drawBlocks();
     synth.filterEnvelope.exponent = sliderFx.value / 30;
@@ -222,7 +226,6 @@ slider.onchange = function changeSlider() {
 function windowResized() {
     setScreen();
     setGrid();
-    resizeCanvas(windowWidth, canvasHeight);
 }
 
 function setScreen() {
@@ -230,10 +233,20 @@ function setScreen() {
     canvasWidth = windowWidth;
 
     if (windowWidth > windowHeight) {
-        screenOfset = (windowWidth - windowHeight);
+        screenOfset = windowWidth - windowHeight;
+        sidebarLeft.style.width = (windowWidth - windowHeight) / 2 + "px";
+
+
+        sidebarRight.style.width = (windowWidth - windowHeight) / 2 + "px";
+        sidebarRight.style.marginLeft = windowWidth - (windowWidth - windowHeight) / 2 + "px";
+
+        resizeCanvas(windowWidth, canvasHeight);
     }
     else {
         screenOfset = 0;
+        sidebarLeft.style.width = 0;
+        sidebarRight.style.width = 0;
+
     }
 }
 

@@ -9,7 +9,8 @@ to do:
 - [x] add bass
 - [x] add rhythem
 - [x] add fx
-- [ ] add left and right section in body instead of big canvas
+- [x] add left and right section in body 
+- [ ] remove old offset elements
 - [ ] scale body with javascript
 
 
