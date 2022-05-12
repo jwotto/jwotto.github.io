@@ -28,7 +28,7 @@ footer {
 
 #sidebarleft {
     position: fixed;
-    opacity: 0.5;
+
     background-color: white;
 
     height: calc(100vh - 104px);
@@ -37,7 +37,7 @@ footer {
 
 #sidebarright {
     position: fixed;
-    opacity: 0.5;
+   
     background-color: white;
     height: calc(100vh - 104px);
 }
