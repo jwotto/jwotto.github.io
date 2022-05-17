@@ -4,10 +4,12 @@ to do:
 - [x] add left and right section in body 
 - [ ] remove old offset elements
 - [ ] scale body with javascript
-
 - [ ] make a design for pc/ tablet / phone
 
-- [ ] clean up code
+- [ ] clean up code css
+        -[x]CSS
+        -[ ]HTML
+        -[ ]JS
 - [ ] bug fix
 
 extra's

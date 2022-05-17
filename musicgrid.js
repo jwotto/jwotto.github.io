@@ -8,22 +8,15 @@ function setGrid() {
 
     GridLeftMargin = screenOfset / 2;
     screenWidth = windowWidth - GridLeftMargin;
-
-    //push the melody and rhytem arrays
-   // ellipseMode(CORNER);
 }
 
 function drawGrid() {
     strokeWeight(5)
     fill(255);
     rect(screenOfset / 2, 0, windowWidth - screenOfset, canvasHeight);
-
     drawPlayhead();
     drawLines();
     drawBlocks();
-
-
-
     strokeWeight(1)
 }
 
@@ -84,7 +77,6 @@ function drawPlayhead() {
     }
 }
 
-
 function mouseClicked() {
 
     var mouseOnNoteGrid = (mouseX > screenOfset / 2 && mouseX < (windowWidth - screenOfset / 2) && (mouseY > 0) && mouseY < canvasHeight - (3 * grid.blockH))
@@ -103,9 +95,7 @@ function mouseClicked() {
             if (sameNoteClickedBass) {
                 bass.pattern[quantizeGridPosX(mouseX)] = -1;
             }
-
         }
-
     }
     if (mouseOnRhytemGrid) {
         if (quantizeGridPosY(mouseY) == 0) {
@@ -117,17 +107,14 @@ function mouseClicked() {
         if (quantizeGridPosY(mouseY) == 2) {
             rhythem.hPattern[quantizeGridPosX(mouseX)] = !rhythem.hPattern[quantizeGridPosX(mouseX)];
         }
-
-
     }
-   // console.log("X" + quantizeGridPosX(mouseX) + " " + "Y" + quantizeGridPosY(mouseY));
 }
-
 
 function quantizeGridPosX(x) {
     var posX = floor((x - (screenOfset / 2)) / grid.blockW);
     return posX;
 }
+
 function quantizeGridPosY(y) {
     posY = floor(y / grid.blockH);
     return grid.height + rhythem.height - posY - 1;

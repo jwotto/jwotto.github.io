@@ -58,7 +58,7 @@ const synth = new Tone.MonoSynth({
         'octaves': 7,
         'exponent': 8
     },
-    "portamento": 0.08,
+    'portamento': 0.08,
     'volume': -38
 
 });
@@ -98,18 +98,18 @@ const bSynth = new Tone.MonoSynth({
 bSynth.chain(distortion, Tone.Destination);
 
 const kick = new Tone.MembraneSynth({
-    "envelope": {
+    'envelope': {
         'attack': 0.0,
         'decay': 0.3,
         'sustain': 0,
         'release': 0.01
     },
-    "pitchDecay": 0.04,
-    "volume": -10
+    'pitchDecay': 0.04,
+    'volume': -10
 }).toDestination();
 
 const snare = new Tone.MembraneSynth({
-    "envelope": {
+    'envelope': {
         'attack': 0.0,
         'decay': 0.2,
         'sustain': 0,
@@ -120,43 +120,38 @@ const snare = new Tone.MembraneSynth({
 }).toDestination();
 
 const snareNoise = new Tone.NoiseSynth({
-    "envelope": {
+    'envelope': {
         'attack': 0.0,
         'decay': 0.15,
         'sustain': 0,
         'release': 0.
     },
-    "volume": -16
+    'volume': -16
 }).toDestination();
 
-
 const noise = new Tone.NoiseSynth({
-    "envelope": {
+    'envelope': {
         'attack': 0.0,
         'decay': 0.1,
         'sustain': 0,
         'release': 0.
         
     },
-    "volume": -14
+    'volume': -14
 });
 noise.connect(ffilter);
-
 
 
 
 function setup() {
     frameRate(30);
     var canvas = createCanvas(windowWidth, windowHeight - footer.offsetHeight - header.offsetHeight);
-
     canvas.parent('sketch-holder');
     getUrlParameter();
     setPatterns();
     setScreen();
     setGrid();
 }
-
-
 
 function draw() {
    // background(255);
@@ -222,7 +217,6 @@ slider.onchange = function changeSlider() {
 
 }
 
-
 function windowResized() {
     setScreen();
     setGrid();
@@ -235,11 +229,8 @@ function setScreen() {
     if (windowWidth > windowHeight) {
         screenOfset = windowWidth - windowHeight;
         sidebarLeft.style.width = (windowWidth - windowHeight) / 2 + "px";
-
-
         sidebarRight.style.width = (windowWidth - windowHeight) / 2 + "px";
-        sidebarRight.style.marginLeft = windowWidth - (windowWidth - windowHeight) / 2 + "px";
-
+        sidebarRight.style.right = 0 + "px";
         resizeCanvas(windowWidth, canvasHeight);
     }
     else {

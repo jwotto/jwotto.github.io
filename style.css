@@ -1,7 +1,6 @@
 * {
     margin: 0;
     padding: 0;
-
     font-family: "Dosis", sans-serif;
 }
 
@@ -15,7 +14,6 @@ header {
     width: 100%;
     height: 40px;
     padding: 0px;
-
     color: white;
 }
 
@@ -28,30 +26,26 @@ footer {
 
 #sidebarleft {
     position: fixed;
-
     background-color: white;
-
     height: calc(100vh - 104px);
-
 }
 
 #sidebarright {
     position: fixed;
-   
-    background-color: white;
+    background-color: red;
     height: calc(100vh - 104px);
 }
 
 #menu-button {
     background-color: rgba(0, 0, 0, 0);
     color: white;
-        position: absolute;
-        border-style: none;
-        font-size: 30px;
-        width: 40px;
-        height: 40px;
-        cursor: pointer;
-        margin-top: -2px;
+    position: fixed;
+    border-style: none;
+    font-size: 30px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    top: -2px;
     }
     
     #menu-button:hover {
@@ -60,16 +54,16 @@ footer {
     }
     
     #melody-button {
-        background-color: rgba(0, 0, 0, 0);
+    background-color: rgba(0, 0, 0, 0);
     color: rgba(255, 0, 0, 125);
-    position: absolute;
+    position: fixed;
     border-style: none;
     font-size: 30px;
     width: 40px;
     height: 40px;
     cursor: pointer;
-    margin-top: -2px;
-    margin-left: 100px;
+    top: -2px;
+    left: 100px;
     }
 
 #melody-button:hover {
@@ -78,6 +72,7 @@ footer {
 }
 
 #bass-button {
+    position: fixed;
     background-color: rgba(0, 0, 0, 0);
     color: rgba(0, 0, 255, 125);
     position: absolute;
@@ -86,8 +81,8 @@ footer {
     width: 40px;
     height: 40px;
     cursor: pointer;
-    margin-top: -2px;
-    margin-left: 70px;
+    top: -2px;
+    left: 70px;
 }
 
 #bass-button:hover {
@@ -96,9 +91,9 @@ footer {
 }
 
 #menu-titel {
+    position: fixed;
     width: 100%;
     text-align: center;
-    position: fixed;
 }
 
 @media only screen and (max-width: 600px) {
@@ -108,13 +103,13 @@ footer {
     }
 }
 
-
 #play-button {
     position: fixed;
-    margin-top: 5px;
-        margin-left: 40px;
+    top: 7px;
+    left: 40px;
     cursor: pointer;
-
+    width:  29px;
+    height: 28px;
 }
 
 #play-button:hover {
@@ -125,34 +120,32 @@ footer {
     position: fixed;
     font-size: 30px;
     color: white;
-        position: fixed;
-        margin-top: 10px;
+    bottom: 10px;
     width: 25%;
-    margin-left: calc(55% - 20px);
+    left: calc(55% - 20px);
 }
 
 #tempo-slider-icon-fast {
     position: fixed;
     font-size: 30px;
     color: white;
-        position: fixed;
-        margin-top: 10px;
+    bottom: 10px;
     width: 25%;
-    margin-left: calc(90% + 15px);
+    left: calc(90% + 15px);
     }
     
     #tempo-slider {
         position: fixed;
-        margin-top: 25px;
+        bottom: 25px;
         width: 35%;
-        margin-left: 55%;
+        left: 55%;
     }
     
     #fx-slider {
         position: fixed;
-        margin-top: 25px;
+        bottom: 25px;
         width: 40%;
-        margin-left: 5%;
+        left: 5%;
     }
     
     
