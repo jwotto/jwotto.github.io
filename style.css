@@ -32,8 +32,8 @@ footer {
 
 #sidebarright {
     position: fixed;
-    background-color: red;
-    height: calc(100vh - 104px);
+    background-color: white;
+    height: calc(100vh - 104px); 
 }
 
 #menu-button {
