@@ -227,9 +227,10 @@ function setScreen() {
     canvasHeight = windowHeight - footer.offsetHeight - header.offsetHeight;
     screenOfset = windowWidth - windowHeight;
     screenOfsetHalf = screenOfset * 0.5;
-    canvasWidth = windowWidth -   screenOfset;
+    
 
     if (windowWidth > windowHeight) {
+        canvasWidth = windowWidth -   screenOfset;
         sidebarLeft.style.width = screenOfsetHalf  + "px";
         sidebarRight.style.width = screenOfsetHalf + "px";
         sidebarRight.style.right = 0 + "px";
@@ -237,6 +238,7 @@ function setScreen() {
         resizeCanvas(canvasWidth  , canvasHeight);
     }
     else {
+        canvasWidth = windowWidth;
         sidebarLeft.style.width = 0;
         sidebarRight.style.width = 0;
         p5Canvas.style.left = 0 + "px";
