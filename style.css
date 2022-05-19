@@ -18,10 +18,11 @@ header {
 }
 
 footer {
+    position: fixed;
     background-color: black;
     width: 100%;
     height: 64px;
-    margin-top: -4px;
+    bottom: 0px;
 }
 
 #sidebarleft {
@@ -32,9 +33,15 @@ footer {
 
 #sidebarright {
     position: fixed;
-    background-color: white;
+    background-color:  white;
     height: calc(100vh - 104px); 
 }
+
+#sketch-holder{
+    position: fixed; 
+
+}
+
 
 #menu-button {
     background-color: rgba(0, 0, 0, 0);

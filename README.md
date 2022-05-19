@@ -2,8 +2,8 @@
 
 to do:
 - [x] add left and right section in body 
-- [ ] remove old offset elements
-- [ ] scale body with javascript
+- [x] remove old offset elements
+- [x] scale body with javascript
 - [ ] make a design for pc/ tablet / phone
 
 - [ ] clean up code css

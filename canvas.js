@@ -6,11 +6,12 @@ var slider = document.getElementById("tempo-slider");
 var sliderFx = document.getElementById("fx-slider");
 var header = document.getElementById("header");
 var footer = document.getElementById("footer");
-var screen = document.getElementById("sketch-holder");
+var p5Canvas = document.getElementById("sketch-holder");
 var sidebarRight = document.getElementById("sidebarright")
 var sidebarLeft = document.getElementById("sidebarleft")
 
 var screenOfset;
+var screenOfsetHalf;
 var canvasHeight;
 var canvasWidth;
 
@@ -224,20 +225,22 @@ function windowResized() {
 
 function setScreen() {
     canvasHeight = windowHeight - footer.offsetHeight - header.offsetHeight;
-    canvasWidth = windowWidth;
+    screenOfset = windowWidth - windowHeight;
+    screenOfsetHalf = screenOfset * 0.5;
+    canvasWidth = windowWidth -   screenOfset;
 
     if (windowWidth > windowHeight) {
-        screenOfset = windowWidth - windowHeight;
-        sidebarLeft.style.width = (windowWidth - windowHeight) / 2 + "px";
-        sidebarRight.style.width = (windowWidth - windowHeight) / 2 + "px";
+        sidebarLeft.style.width = screenOfsetHalf  + "px";
+        sidebarRight.style.width = screenOfsetHalf + "px";
         sidebarRight.style.right = 0 + "px";
-        resizeCanvas(windowWidth, canvasHeight);
+        p5Canvas.style.left = screenOfsetHalf  + "px";
+        resizeCanvas(canvasWidth  , canvasHeight);
     }
     else {
-        screenOfset = 0;
         sidebarLeft.style.width = 0;
         sidebarRight.style.width = 0;
-
+        p5Canvas.style.left = 0 + "px";
+        resizeCanvas(canvasWidth  , canvasHeight);
     }
 }
 
