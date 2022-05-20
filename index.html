@@ -9,44 +9,32 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.39/Tone.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/p5@1.4.1/lib/p5.js"></script>
     <title>Techno maker</title>
+    <meta property="og:image" content="technomaker.png" />
+    <meta property="og:image:width" content="180" />
+    <meta property="og:image:height" content="110" />
 </head>
 
 <body>
-
     <header id="header">
         <h1 id="menu-titel">Techno Maker</h1>
-
         <button id="menu-button"> ☰ </button>
-
-        <button type="button" id="play-button" onclick="PlaySound()">
+        <button type="button" id="play-button" onclick="PlaySound()"> 
             <img src="play-button.png" height="23" width="23" /></button>
-        
         <button id="melody-button">⬓</button>
-
-            <button id="bass-button">⬒</button>
+        <button id="bass-button">⬒</button>
     </header>
 
     <main>
         <div id="sidebarleft"> </div>
-
         <div id="sidebarright"> </div>
-
         <div id="sketch-holder"> </div>
-
-
     </main>
 
     <footer id="footer">
-
-    
         <b id="tempo-slider-icon-slow">♩</b>
-
         <b id="tempo-slider-icon-fast">♫</b>
         <input type="range" class="slider" id="tempo-slider" name="points" min="90" max="140">
-        
-        
         <input type="range" class="slider" id="fx-slider" name="points" min="20" max="110">
-
     </footer>
 </body>
 
