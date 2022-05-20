@@ -1,3 +1,12 @@
+:root {
+    --black: #000000;
+    --blue: #14213d; 
+    --orange: #fca311;
+    --grey: #e5e5e5;
+    --white: #ffffff;
+  }
+
+
 * {
     margin: 0;
     padding: 0;
@@ -10,16 +19,16 @@ body {
 }
 
 header {
-    background-color: black;
+    background-color: var(--blue);
     width: 100%;
     height: 40px;
     padding: 0px;
-    color: white;
+    color: var(--white);
 }
 
 footer {
     position: fixed;
-    background-color: black;
+    background-color: var(--blue);
     width: 100%;
     height: 64px;
     bottom: 0px;
@@ -27,13 +36,13 @@ footer {
 
 #sidebarleft {
     position: fixed;
-    background-color: white;
+    background-color: var(--grey);
     height: calc(100vh - 104px);
 }
 
 #sidebarright {
     position: fixed;
-    background-color:  white;
+    background-color: var(--grey);
     height: calc(100vh - 104px); 
 }
 
@@ -44,8 +53,8 @@ footer {
 
 
 #menu-button {
-    background-color: rgba(0, 0, 0, 0);
-    color: white;
+    background-color: var(--blue);
+    color: var(--white);
     position: fixed;
     border-style: none;
     font-size: 30px;
@@ -56,44 +65,44 @@ footer {
     }
     
     #menu-button:hover {
-        color: grey;
+        color: var(--grey);
     
     }
     
     #melody-button {
-    background-color: rgba(0, 0, 0, 0);
-    color: rgba(255, 0, 0, 125);
+    background-color: var(--blue);
+    color: var(--white);
     position: fixed;
     border-style: none;
-    font-size: 30px;
-    width: 40px;
+    font-size: 42px;
+    width: 30px;
     height: 40px;
     cursor: pointer;
-    top: -2px;
-    left: 100px;
+    top: -7px;
+    left: 110px;
     }
 
 #melody-button:hover {
-    color: grey;
+    color: var(--orange);
 
 }
 
 #bass-button {
     position: fixed;
-    background-color: rgba(0, 0, 0, 0);
-    color: rgba(0, 0, 255, 125);
+    background-color: var(--blue);
+    color: var(--white);
     position: absolute;
     border-style: none;
-    font-size: 30px;
-    width: 40px;
+    font-size: 42px;
+    width: 30px;
     height: 40px;
     cursor: pointer;
-    top: -2px;
-    left: 70px;
+    top: -7px;
+    left: 75px;
 }
 
 #bass-button:hover {
-    color: grey;
+    color: var(--black);
 
 }
 
@@ -126,19 +135,19 @@ footer {
 #tempo-slider-icon-slow {
     position: fixed;
     font-size: 30px;
-    color: white;
+    color: var(--white);
     bottom: 10px;
     width: 25%;
-    left: calc(55% - 20px);
+    left: calc(55% - 25px);
 }
 
 #tempo-slider-icon-fast {
     position: fixed;
     font-size: 30px;
-    color: white;
+    color: var(--white);
     bottom: 10px;
     width: 25%;
-    left: calc(90% + 15px);
+    left: calc(90% + 10px);
     }
     
     #tempo-slider {
@@ -158,9 +167,19 @@ footer {
     
     .slider {
         -webkit-appearance: none;
-        background: #111;
+        background: var(--white);
         outline: none;
         border-radius: 15px;
         overflow: hidden;
-        box-shadow: inset 0 0 5px rgba(0, 0, 0, 1);
+        
 }
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 30px;
+    height: 20px;
+    border-radius: 5px;
+    background-color: var(--orange);
+    overflow: visible;
+    cursor: pointer;
+  }

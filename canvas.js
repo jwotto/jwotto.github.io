@@ -15,6 +15,12 @@ var screenOfsetHalf;
 var canvasHeight;
 var canvasWidth;
 
+let palletBlack = '#000000';
+let palletBlue = '#14213d';
+let palletOrange = '#fca311';
+let palletGrey = '#e5e5e5';
+let palletWhite = '#ffffff';
+
 var grid = { length: 8, height: 8, blockW: 0, blockH: 0 }
 block = [];
 var rhythem = { height: 3, kPattern: [1, 0, 0, 0, 1, 0, 0, 0], sPattern: [0, 0, 0, 0, 0, 0, 0, 0], hPattern: [0, 0, 1, 0, 0, 0, 1, 0] }

@@ -14,15 +14,16 @@ function drawGrid() {
 }
 
 function drawLines() {
-
+    stroke(palletGrey);
     for (var i = 0; i < grid.length; i++) {
-        strokeWeight(1)
+        strokeWeight(3)
+    
         line( i * grid.blockW, 0, i * grid.blockW, windowHeight);
     }
 
     for (var j = 0; j < grid.height + rhythem.height; j++) {
-        strokeWeight(1);
-        if (j == grid.height) { strokeWeight(5); }
+        strokeWeight(3);
+        if (j == grid.height) { strokeWeight(8); }
         line(0, j * grid.blockH, canvasWidth, j * grid.blockH);
     }
 
@@ -34,29 +35,29 @@ function drawBlocks() {
         let blockPosX = i * grid.blockW;
 
         if (bass.pattern[i] >= 0) {
-            fill(0, 0, 255, 125)
-            rect(blockPosX, (grid.height - 1 - bass.pattern[i]) * grid.blockH, grid.blockW, grid.blockH, 10);
+            fill(palletBlue)
+            rect(blockPosX, ((grid.height - 1 - bass.pattern[i]) * grid.blockH) + (grid.blockH*0.5), grid.blockW, grid.blockH*0.5, 10);
             noFill();
         }
         //draw melody pattern
         if (melody.pattern[i] >= 0) {
-            fill(255, 0, 0, 125)
-            rect(blockPosX, (grid.height - 1 - melody.pattern[i]) * grid.blockH, grid.blockW, grid.blockH, 10);
+            fill(palletOrange)
+            rect(blockPosX, ((grid.height - 1 - melody.pattern[i]) * grid.blockH), grid.blockW, grid.blockH*0.5, 10);
             noFill();
         }
         //draw rhytem pattern
         var blockCenter = blockPosX + (grid.blockW * 0.5);
 
         if (rhythem.kPattern[i] == true) {
-            fill(20)
+            fill(palletOrange)
             rect((blockPosX), (grid.height + 2) * grid.blockH, grid.blockW, grid.blockH, 10);
         }
         if (rhythem.hPattern[i] == true) {
-            fill(20)
+            fill(palletOrange)
             triangle(blockPosX, (grid.height + 1) * grid.blockH, blockPosX + grid.blockW, (grid.height + 1) * grid.blockH, blockCenter, (grid.height) * grid.blockH);
         }
         if (rhythem.sPattern[i] == true) {
-            fill(20)
+            fill(palletBlue)
             ellipse(blockCenter, ((grid.height + 1) * grid.blockH) + grid.blockH * 0.5, grid.blockH * 0.8, grid.blockH * 0.8, 10);
         }
     }
@@ -64,7 +65,8 @@ function drawBlocks() {
 
 function drawPlayhead() {
     if (playClick) {
-        fill(100);
+        strokeWeight(1)
+        fill(palletGrey);
         rect( ((((playHead + (grid.length - 1)) % grid.length)) * grid.blockW), 0, grid.blockW, canvasHeight);
     }
 }
