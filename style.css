@@ -74,11 +74,11 @@ footer {
     color: var(--white);
     position: fixed;
     border-style: none;
-    font-size: 42px;
+    font-size: 30px;
     width: 30px;
     height: 40px;
     cursor: pointer;
-    top: -7px;
+    top: -4px;
     left: 110px;
     }
 
@@ -93,11 +93,11 @@ footer {
     color: var(--white);
     position: absolute;
     border-style: none;
-    font-size: 42px;
+    font-size: 30px;
     width: 30px;
     height: 40px;
     cursor: pointer;
-    top: -7px;
+    top: -4px;
     left: 75px;
 }
 
