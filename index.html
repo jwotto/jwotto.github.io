@@ -1,54 +1,713 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.39/Tone.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/p5@1.4.1/lib/p5.js"></script>
-    <title>Techno Maker</title>
-    <meta http-equiv="Content-Language" content="en-us" />
-    <meta itemprop="name" content="Techno Maker"/>
-    <meta property="og:title" content="Techno Maker"/>
-    <meta property="og:site_name" content="Techno Maker"/>
-    <meta name="keywords" content="Techno, online, maker, beat, app, free" />
-    <meta name="description" content="Everyone can make techno with this website" />
-    <meta itemprop="description" content="Everyone can make techno with this website"/>
-    <meta property="og:description" content="Everyone can make techno with this website"/>
-    <meta property="og:url" content="http://jwotto.github.io.htm"/>
-    <meta property="og:image" content="http://jwotto.github.io/technomaker.png"/>
-    <meta itemprop="image" content="http://jwotto.github.io/technomaker.png"/>
-    <meta name="author" content="Jan-Willem Otto - http://jwotto.com" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Puzzel Ontwerper</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .notemove {transition: bottom 0.14s cubic-bezier(.4,.2,.4,1), background 0.12s;}
+    .notenstok {position: absolute; width: 4px; background: black; top: 50%; z-index: 20; transition: transform 0.12s;}
+    .notenletter {position: relative; z-index: 22; font-weight: bold; color: white; text-align: center; width: 100%; line-height: 20px; font-size: 13px; pointer-events: none; user-select: none;}
+    .toolbar-btn svg text, .toolbar-btn svg rect, .toolbar-btn svg circle {transition: fill 0.15s, stroke 0.15s;}
+    .notenbalk-svg {position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;}
+    .notenblokkie {background: transparent; border-radius: 0.5rem; z-index: 2;}
+    .input-onstaff {width: 56px; height: 32px; border-radius: 0.5rem; font-size: 1rem; border: 2px solid #d1d5db; margin-top: 2px; margin-bottom: 2px; text-align: center; background: white; color: black; outline: none; font-weight: normal; transition: border .15s, font-weight .15s; position: relative; z-index: 10; display: block;}
+    .input-onstaff.filled {border-color: #000; font-weight: bold;}
+    .border-blue-500 {border-color: #3b82f6 !important; border-width: 4px !important;}
+    .omdraai-icoon {display: flex; justify-content: center; align-items: center; min-height: 28px; width: 100%; margin: 4px 0;}
+    .omdraai-placeholder {min-height: 28px; height: 28px; width: 28px; display: inline-block;}
+  </style>
 </head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center p-2 sm:p-6">
 
-<body>
-    <header id="header">
-        <h1 id="menu-titel">Techno Maker</h1>
-        <button id="menu-button"> ☰ </button>
-        <button type="button" id="play-button" onclick="PlaySound()"> 
-            <img src="play-button.png" height="23" width="23" /></button>
-        <button id="melody-button">⬓</button>
-        <button id="bass-button">⬒</button>
-    </header>
+  <!-- NAAM EN TOONSOORT NAAST ELKAAR -->
+  <div class="w-full max-w-5xl flex flex-col sm:flex-row gap-4 mb-4">
+    <div class="flex-1">
+      <label for="puzzleNameInput" class="block mb-1 font-semibold">Naam van de puzzel</label>
+      <input id="puzzleNameInput" type="text" placeholder="Puzzelnaam" class="border border-gray-300 px-3 py-2 rounded w-full text-lg" maxlength="40" />
+    </div>
+    <div class="flex-1">
+      <label for="puzzleKeyInput" class="block mb-1 font-semibold">Toonsoort</label>
+      <select id="puzzleKeyInput" class="border border-gray-300 px-3 py-2 rounded w-full text-lg">
+        <option value="C">C</option>
+        <option value="D">D</option>
+        <option value="F">F</option>
+        <option value="G">G</option>
+        <option value="Bb">Bb</option>
+        <option value="Eb">Eb</option>
+      </select>
+    </div>
+  </div>
 
-    <main>
-        <div id="sidebarleft"> </div>
-        <div id="sidebarright"> </div>
-        <div id="sketch-holder"> </div>
-    </main>
+  <!-- Toolbar -->
+  <div class="flex flex-wrap gap-2 mt-6 mb-4 w-full max-w-5xl items-start">
+    <h1 class="text-2xl font-semibold flex-1 min-w-[200px]">Puzzel Ontwerper</h1>
+    <div class="flex flex-wrap gap-2">
+      <button aria-label="Selecteer hand" title="Selecteer hand" onclick="selectTool('hand')" id="btn-hand" class="toolbar-btn w-10 h-10 bg-white text-black border border-gray-400 rounded flex items-center justify-center text-xl font-semibold">🖐️</button>
+      <button aria-label="Cirkel plaatsen" title="Cirkel plaatsen" onclick="selectTool('circle')" id="btn-circle" class="toolbar-btn w-10 h-10 bg-blue-600 text-white border border-gray-400 rounded flex items-center justify-center text-lg font-semibold">
+        <svg width="22" height="22"><circle cx="11" cy="11" r="8" stroke="black" stroke-width="2" fill="none"/></svg>
+      </button>
+      <button aria-label="Vierkant plaatsen" title="Vierkant plaatsen" onclick="selectTool('square')" id="btn-square" class="toolbar-btn w-10 h-10 bg-white text-black border border-gray-400 rounded flex items-center justify-center text-lg font-semibold">
+        <svg width="22" height="22"><rect x="5" y="5" width="12" height="12" stroke="black" stroke-width="2" fill="none"/></svg>
+      </button>
+      <button aria-label="Kruis plaatsen (♯)" title="Kruis plaatsen (♯)" onclick="selectTool('sharp')" id="btn-sharp" class="toolbar-btn w-10 h-10 bg-white text-black border border-gray-400 rounded flex items-center justify-center text-lg font-semibold">
+        <span class="block w-8 h-8 sm:w-11 sm:h-11">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -16 16 64" class="w-full h-full">
+            <line x1="5" y1="0" x2="5" y2="32" stroke="black" stroke-width="2"/>
+            <line x1="11" y1="0" x2="11" y2="32" stroke="black" stroke-width="2"/>
+            <line x1="0" y1="10" x2="16" y2="6" stroke="black" stroke-width="2"/>
+            <line x1="0" y1="22" x2="16" y2="18" stroke="black" stroke-width="2"/>
+          </svg>
+        </span>
+      </button>
+      <button aria-label="Mol plaatsen (♭)" title="Mol plaatsen (♭)" onclick="selectTool('flat')" id="btn-flat" class="toolbar-btn w-10 h-10 bg-white text-black border border-gray-400 rounded flex items-center justify-center text-lg font-semibold">
+        <span class="block w-8 h-8 sm:w-11 sm:h-11">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -10 16 48" class="w-full h-full">
+            <line x1="8" y1="0" x2="8" y2="28" stroke="black" stroke-width="2"/>
+            <path d="M8 14 Q20 17 8 28" fill="none" stroke="black" stroke-width="2"/>
+          </svg>
+        </span>
+      </button>
+      <button aria-label="Herhaalteken plaatsen" title="Herhaalteken plaatsen" onclick="toggleOmdraai()" id="btn-omdraai" class="w-10 h-10 bg-white text-black border border-gray-400 rounded hover:bg-gray-200 flex items-center justify-center text-lg font-semibold">
+        <svg width="28" height="28" viewBox="0 0 28 28">
+          <path d="M5 13c0-3.87 3.13-7 7-7h4" stroke="black" stroke-width="2" fill="none"/>
+          <polygon points="15,3 19,6 15,9" fill="black"/>
+          <path d="M23 15c0 3.87-3.13 7-7 7h-4" stroke="black" stroke-width="2" fill="none"/>
+          <polygon points="13,25 9,22 13,19" fill="black"/>
+        </svg>
+      </button>
+      <button aria-label="Leegmaken" title="Leegmaken" onclick="clearNoteBlock()" id="btn-clear" class="toolbar-btn w-10 h-10 bg-white text-black border border-gray-400 rounded flex items-center justify-center text-2xl font-bold">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <circle cx="11" cy="11" r="8" stroke="black" stroke-width="2"/>
+          <line x1="7" y1="15" x2="15" y2="7" stroke="black" stroke-width="2"/>
+        </svg>
+      </button>
+      <button aria-label="Nieuw tekstvak toevoegen" title="Nieuw tekstvak toevoegen" onclick="addTextbox()" class="w-10 h-10 bg-blue-500 text-white rounded hover:bg-blue-600 flex items-center justify-center text-lg font-semibold">+</button>
+      <button aria-label="Naar links verplaatsen" title="Naar links verplaatsen" onclick="moveSelected(-1)" class="w-10 h-10 bg-gray-600 text-white rounded hover:bg-gray-700 flex items-center justify-center text-lg font-semibold">←</button>
+      <button aria-label="Naar rechts verplaatsen" title="Naar rechts verplaatsen" onclick="moveSelected(1)" class="w-10 h-10 bg-gray-600 text-white rounded hover:bg-gray-700 flex items-center justify-center text-lg font-semibold">→</button>
+      <button aria-label="Verwijder geselecteerd vak" title="Verwijder geselecteerd vak" onclick="removeSelected()" class="w-10 h-10 bg-red-500 text-white rounded hover:bg-red-600 flex items-center justify-center text-lg font-semibold">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <rect x="5" y="8" width="10" height="7" rx="2" stroke="white" stroke-width="2"/>
+          <path d="M8 8V6a2 2 0 0 1 2-2v0a2 2 0 0 1 2 2v2" stroke="white" stroke-width="2"/>
+          <line x1="7" y1="8" x2="13" y2="8" stroke="white" stroke-width="2"/>
+        </svg>
+      </button>
+    </div>
+  </div>
 
-    <footer id="footer">
-        <b id="tempo-slider-icon-slow">♩</b>
-        <b id="tempo-slider-icon-fast">♫</b>
-        <input type="range" class="slider" id="tempo-slider" name="points" min="90" max="140">
-        <input type="range" class="slider" id="fx-slider" name="points" min="20" max="110">
-    </footer>
+  <div id="scrollWrapper" class="w-full max-w-5xl overflow-x-auto mb-8 border rounded shadow bg-white" style="position:relative;">
+    <div id="container" class="flex min-w-fit relative z-10"></div>
+  </div>
+
+  <div class="w-full max-w-5xl mb-4">
+    <label for="puzzleAnswerInput" class="block mb-1 font-semibold">Oplossing van de puzzel</label>
+    <input id="puzzleAnswerInput" type="text" placeholder="Oplossing (antwoord)" class="border border-gray-300 px-3 py-2 rounded w-full text-lg" maxlength="80" />
+  </div>
+  <div class="w-full max-w-5xl mb-4">
+    <label for="puzzleTipInput" class="block mb-1 font-semibold">Tip voor de puzzel</label>
+    <textarea id="puzzleTipInput" rows="" placeholder="Tip voor de puzzel" class="border border-gray-300 px-3 py-2 rounded w-full text-lg resize-none" maxlength="200"></textarea>
+  </div>
+  <div class="w-full max-w-5xl mb-4">
+    <label for="puzzleLevelInput" class="block mb-1 font-semibold">Niveau</label>
+    <select id="puzzleLevelInput" class="border border-gray-300 px-3 py-2 rounded w-full text-lg">
+      <option value="level1">Level 1</option>
+      <option value="level2">Level 2</option>
+      <option value="level3">Level 3</option>
+    </select>
+  </div>
+  <div class="w-full max-w-5xl flex flex-wrap gap-2 mb-8 items-center">
+    <button onclick="downloadJSON()" class="px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600">Opslaan</button>
+    <label class="px-4 py-2 rounded bg-gray-200 text-gray-700 hover:bg-gray-300 cursor-pointer">
+      Laden
+      <input type="file" accept=".json" onchange="loadJSONFile(this)" style="display:none;">
+    </label>
+  </div>
+
+<script>
+// SHARP & FLAT SVG COMPONENTEN
+function getSharpSVG(className = "") {
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -22 16 64" class="${className}">
+    <line x1="5" y1="0" x2="5" y2="32" stroke="black" stroke-width="2"/>
+    <line x1="11" y1="0" x2="11" y2="32" stroke="black" stroke-width="2"/>
+    <line x1="0" y1="10" x2="16" y2="6" stroke="black" stroke-width="2"/>
+    <line x1="0" y1="22" x2="16" y2="18" stroke="black" stroke-width="2"/>
+  </svg>`;
+}
+function getFlatSVG(className = "") {
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-15 -7 16 48" class="${className}">
+    <line x1="8" y1="0" x2="8" y2="28" stroke="black" stroke-width="2"/>
+    <path d="M8 14 Q20 17 8 28" fill="none" stroke="black" stroke-width="2"/>
+  </svg>`;
+}
+
+const noteNames = [
+  "G", "A", "B", "C", "D", "E", "F", "G", "A", "B", "C", "D", "E", "F", "G", "A", "B", "C", "D"
+];
+const linedPositions = [1, 3, 5, 7, 9, 11, 13, 15, 17];
+const dottedPositions = [1, 3, 15, 17];
+const stickMiddle = 9;
+const positionOffsets = Array.from({ length: 19 }, (_, i) => (i + 1) * (100 / 20));
+let idCounter = 0, selectedBox = null, selectedTool = 'circle';
+const container = document.getElementById('container');
+
+// Alleen C, D, F, G, Bb, Eb
+const keySignaturePositions = {
+  C: [],
+  G:    [{type: 'sharp', pos: 13}], // F# (hoge F)
+  D:    [{type: 'sharp', pos: 13}, {type: 'sharp', pos: 10}], // F# (hoge F), C#
+  F:    [{type: 'flat', pos: 9}], // Bb
+  Bb:   [{type: 'flat', pos: 9}, {type: 'flat', pos: 12}], // Bb, Eb
+  Eb:   [{type: 'flat', pos: 9}, {type: 'flat', pos: 12}, {type: 'flat', pos: 8}], // Bb, Eb, Ab
+};
+
+function getKeySignatureBlock(key) {
+  const box = document.createElement('div');
+  box.className = "notenblokkie bg-transparent p-1 flex border-4 flex-col items-center border border-transparent opacity-80";
+  box.setAttribute('data-keysig', 'true');
+  box.style.pointerEvents = "none";
+
+  const staff = document.createElement('div');
+  staff.className = "relative h-48 w-14 bg-transparent mb-3";
+  staff.style.overflow = "visible";
+  staff.innerHTML = getNotenbalkSVG();
+
+  const sigs = keySignaturePositions[key] || [];
+  sigs.forEach((sign, idx) => {
+    const accidentalDiv = document.createElement('div');
+    accidentalDiv.className = "absolute left-[32%] -translate-x-full translate-y-[45%] z-10 pointer-events-none select-none";
+    accidentalDiv.style.marginLeft = `${idx * 11}px`;
+    accidentalDiv.style.bottom = `calc(${positionOffsets[sign.pos]}%)`;
+    if (sign.type === "sharp") {
+      accidentalDiv.innerHTML = getSharpSVG("w-8 h-8 sm:w-11 sm:h-11");
+    } else {
+      accidentalDiv.innerHTML = getFlatSVG("w-8 h-8 sm:w-11 sm:h-11");
+    }
+    staff.appendChild(accidentalDiv);
+  });
+
+  box.appendChild(staff);
+  return box;
+}
+
+function addKeySignatureBlock() {
+  const key = document.getElementById('puzzleKeyInput').value;
+  if (container.firstChild && container.firstChild.getAttribute('data-keysig')) {
+    container.removeChild(container.firstChild);
+  }
+  const keyBlock = getKeySignatureBlock(key);
+  container.insertBefore(keyBlock, container.firstChild);
+}
+
+document.getElementById('puzzleKeyInput').addEventListener('change', function() {
+  addKeySignatureBlock();
+});
+
+function getNotenbalkSVG(width = 56, height = 192) {
+  let svg = `<svg class="notenbalk-svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" style="display:block">`;
+  linedPositions.forEach(i => {
+    const y = height - (positionOffsets[i] / 100 * height);
+    const style = dottedPositions.includes(i)
+      ? 'stroke-dasharray:8,8;stroke:#a3a3a3;stroke-width:2'
+      : 'stroke:black;stroke-width:2';
+    svg += `<line x1="0" x2="${width}" y1="${y}" y2="${y}" style="${style}" />`;
+  });
+  svg += '</svg>';
+  return svg;
+}
+
+function selectTool(tool) {
+  selectedTool = tool;
+  ['hand','circle', 'square', 'sharp', 'flat'].forEach(t => {
+    const btn = document.getElementById(`btn-${t}`);
+    if (btn) {
+      btn.classList.remove('bg-blue-600', 'text-white');
+      btn.classList.add('bg-white', 'text-black');
+    }
+  });
+  const activeBtn = document.getElementById(`btn-${tool}`);
+  if (activeBtn) {
+    activeBtn.classList.remove('bg-white', 'text-black');
+    activeBtn.classList.add('bg-blue-600', 'text-white');
+  }
+}
+
+function addTextbox() {
+  const box = document.createElement('div');
+  box.className = "notenblokkie bg-transparent p-1 flex border-4 flex-col items-center border border-transparent";
+  box.setAttribute('data-id', idCounter++);
+  box.setAttribute('data-selected', 'null');
+  box.setAttribute('data-shape', 'circle');
+  box.setAttribute('data-textonstaff', '');
+  box.setAttribute('data-has-staff-input', 'false');
+  box.setAttribute('data-omdraai', 'false');
+
+  const staff = document.createElement('div');
+  staff.className = "relative h-48 w-14 bg-transparent mb-3 cursor-pointer";
+  staff.style.overflow = "visible";
+  staff.innerHTML = getNotenbalkSVG();
+
+  const marker = document.createElement('div');
+  marker.className = "notemove absolute left-1/2 -translate-x-1/2 translate-y-1/2 w-5 h-5 bg-black border-2 border-black z-10 flex items-center justify-center rounded-full hidden select-none pointer-events-none";
+  marker.setAttribute('data-marker', '');
+  staff.appendChild(marker);
+
+  const accidental = document.createElement('div');
+  accidental.className = "absolute left-[32%] -translate-x-full translate-y-[45%] z-10 pointer-events-none select-none hidden";
+  accidental.setAttribute('data-accidental', '');
+  staff.appendChild(accidental);
+
+  box.appendChild(staff);
+
+  const bovenruimte = document.createElement('div');
+  bovenruimte.className = "h-8 flex items-center justify-center w-full";
+  bovenruimte.setAttribute('data-bovenruimte', '');
+
+  const staffInput = document.createElement('input');
+  staffInput.type = "text";
+  staffInput.maxLength = 12;
+  staffInput.className = "input-onstaff";
+  staffInput.value = "";
+  staffInput.addEventListener('input', function () {
+    box.setAttribute('data-textonstaff', staffInput.value);
+    updateTextOnStaffAppearance(staffInput);
+    updateJSON();
+  });
+  bovenruimte.appendChild(staffInput);
+
+  box.appendChild(bovenruimte);
+
+  const omdraaiDiv = document.createElement('div');
+  omdraaiDiv.setAttribute('data-omdraai', '');
+  omdraaiDiv.className = "omdraai-icoon";
+  omdraaiDiv.innerHTML = `<span class="omdraai-placeholder"></span>`;
+  box.appendChild(omdraaiDiv);
+
+  const input = document.createElement('input');
+  input.setAttribute('maxlength', 5);
+  input.className = "w-14 border-2 border-black rounded text-center text-base outline-none mt-2 bg-white";
+  input.value = "";
+  input.addEventListener('input', () => {
+    box.setAttribute('data-value', input.value);
+    updateJSON();
+  });
+  box.setAttribute('data-value', '');
+
+  box.appendChild(input);
+  container.appendChild(box);
+
+  box.addEventListener('click', function(e) {
+    e.stopPropagation();
+    selectBox(box);
+  });
+
+  staff.addEventListener('mousedown', e => {
+    if(selectedTool === 'hand') return;
+    handleStaffClick(e, box, staff);
+  });
+
+  updateTextOnStaffAppearance(staffInput);
+  updateJSON();
+  selectBox(box);
+  updateOmdraaiIcoon(box);
+}
+
+function updateTextOnStaffAppearance(staffInput) {
+  if (staffInput.value.trim() !== "") {
+    staffInput.className = "input-onstaff filled";
+  } else {
+    staffInput.className = "input-onstaff";
+  }
+}
+
+function selectBox(box) {
+  if (selectedBox && selectedBox !== box) {
+    selectedBox.classList.remove('border-blue-500');
+  }
+  selectedBox = box;
+  box.classList.add('border-blue-500');
+}
+
+function handleStaffClick(event, box, staff) {
+  const bovenruimte = box.querySelector('[data-bovenruimte]');
+  const staffInput = bovenruimte.querySelector('input');
+  if (['circle','square','sharp','flat'].includes(selectedTool)) {
+    const rect = staff.getBoundingClientRect();
+    const y = event.clientY - rect.top;
+    const pct = 100 * (1 - y / rect.height);
+
+    let closestIndex = 0, minDiff = Infinity;
+    positionOffsets.forEach((offset, i) => {
+      const diff = Math.abs(pct - offset);
+      if (diff < minDiff) { minDiff = diff; closestIndex = i; }
+    });
+
+    const marker = staff.querySelector('[data-marker]');
+    const accidentalEl = staff.querySelector('[data-accidental]');
+    const note = noteNames[closestIndex];
+
+    let shape = (selectedTool === 'square') ? 'square'
+      : (selectedTool === 'sharp') ? 'sharp'
+      : (selectedTool === 'flat') ? 'flat'
+      : 'circle';
+
+    const prevPos = box.getAttribute('data-selected');
+    const prevShape = box.getAttribute('data-shape');
+    if (
+      prevPos !== null &&
+      prevPos !== 'null' &&
+      parseInt(prevPos) === closestIndex &&
+      prevShape === shape
+    ) {
+      marker.classList.add('hidden');
+      accidentalEl.classList.add('hidden');
+      marker.innerHTML = '';
+      accidentalEl.innerHTML = '';
+      box.setAttribute('data-selected', 'null');
+      box.setAttribute('data-shape', 'circle');
+      updateJSON();
+      return;
+    }
+
+    marker.className = "notemove absolute left-1/2 -translate-x-1/2 translate-y-1/2 w-5 h-5 bg-black border-2 border-black z-10 flex items-center justify-center select-none pointer-events-none";
+    marker.classList.toggle('rounded-full', ['circle','sharp','flat'].includes(shape));
+    marker.classList.toggle('rounded-none', shape === 'square');
+    marker.classList.remove('hidden');
+    marker.style.bottom = `${positionOffsets[closestIndex]}%`;
+
+    accidentalEl.classList.remove('hidden');
+    accidentalEl.style.bottom = `calc(${positionOffsets[closestIndex]}%)`;
+    if (shape === 'sharp') {
+      accidentalEl.innerHTML = getSharpSVG("w-8 h-8 sm:w-11 sm:h-11");
+    } else if (shape === 'flat') {
+      accidentalEl.innerHTML = getFlatSVG("w-8 h-8 sm:w-11 sm:h-11");
+    } else {
+      accidentalEl.innerHTML = '';
+      accidentalEl.classList.add('hidden');
+    }
+
+    marker.innerHTML = '';
+    const letter = document.createElement('span');
+    letter.className = 'notenletter';
+    letter.innerText = note;
+    marker.appendChild(letter);
+
+    if (shape !== 'text') {
+      const stick = document.createElement('div');
+      stick.className = 'notenstok';
+      stick.style.height = '36px';
+      if (closestIndex <= stickMiddle) {
+        stick.style.left = '88%';
+        stick.style.right = '-9px';
+        stick.style.transform = 'translateY(-100%)';
+      } else {
+        stick.style.left = '-2px';
+        stick.style.right = 'auto';
+        stick.style.transform = 'translateY(0%) rotate(180deg)';
+      }
+      stick.style.top = '50%';
+      marker.appendChild(stick);
+    }
+
+    box.setAttribute('data-selected', closestIndex);
+    box.setAttribute('data-shape', shape);
+    box.setAttribute('data-textonstaff', staffInput.value);
+    updateJSON();
+  }
+}
+
+function toggleOmdraai() {
+  if (!selectedBox) return;
+  const omdraaiDiv = selectedBox.querySelector('[data-omdraai]');
+  if (!omdraaiDiv) return;
+  if (selectedBox.getAttribute('data-omdraai') !== 'true') {
+    selectedBox.setAttribute('data-omdraai', 'true');
+    omdraaiDiv.innerHTML = `
+      <svg width="28" height="28" viewBox="0 0 28 28">
+        <path d="M5 13c0-3.87 3.13-7 7-7h4" stroke="black" stroke-width="2" fill="none"/>
+        <polygon points="15,3 19,6 15,9" fill="black"/>
+        <path d="M23 15c0 3.87-3.13 7-7 7h-4" stroke="black" stroke-width="2" fill="none"/>
+        <polygon points="13,25 9,22 13,19" fill="black"/>
+      </svg>
+    `;
+  } else {
+    selectedBox.setAttribute('data-omdraai', 'false');
+    omdraaiDiv.innerHTML = `<span class="omdraai-placeholder"></span>`;
+  }
+  updateJSON();
+}
+
+function updateOmdraaiIcoon(box) {
+  const omdraaiDiv = box.querySelector('[data-omdraai]');
+  if (!omdraaiDiv) return;
+  if (box.getAttribute('data-omdraai') === "true") {
+    omdraaiDiv.innerHTML = `
+      <svg width="28" height="28" viewBox="0 0 28 28">
+        <path d="M5 13c0-3.87 3.13-7 7-7h4" stroke="black" stroke-width="2" fill="none"/>
+        <polygon points="15,3 19,6 15,9" fill="black"/>
+        <path d="M23 15c0 3.87-3.13 7-7 7h-4" stroke="black" stroke-width="2" fill="none"/>
+        <polygon points="13,25 9,22 13,19" fill="black"/>
+      </svg>
+    `;
+  } else {
+    omdraaiDiv.innerHTML = `<span class="omdraai-placeholder"></span>`;
+  }
+}
+
+function clearNoteBlock() {
+  if (!selectedBox) return;
+  const staff = selectedBox.querySelector('.relative');
+  const marker = staff.querySelector('[data-marker]');
+  const accidentalEl = staff.querySelector('[data-accidental]');
+  marker.classList.add('hidden');
+  accidentalEl.classList.add('hidden');
+  marker.innerHTML = '';
+  accidentalEl.innerHTML = '';
+  selectedBox.setAttribute('data-selected', 'null');
+  selectedBox.setAttribute('data-shape', 'circle');
+  const bovenruimte = selectedBox.querySelector('[data-bovenruimte]');
+  if (bovenruimte) {
+    const staffInput = bovenruimte.querySelector('input');
+    if (staffInput) {
+      staffInput.value = '';
+      updateTextOnStaffAppearance(staffInput);
+      selectedBox.setAttribute('data-textonstaff', '');
+    }
+  }
+  const input = selectedBox.querySelector('input.w-14');
+  if (input) {
+    input.value = '';
+    selectedBox.setAttribute('data-value', '');
+  }
+  selectedBox.setAttribute('data-omdraai', 'false');
+  updateOmdraaiIcoon(selectedBox);
+  updateJSON();
+}
+
+function updateJSON() {
+  const puzzleName = document.getElementById('puzzleNameInput')?.value || '';
+  const puzzleAnswer = document.getElementById('puzzleAnswerInput')?.value || '';
+  const puzzleLevel = document.getElementById('puzzleLevelInput')?.value || '';
+  const puzzleKey = document.getElementById('puzzleKeyInput')?.value || '';
+  const puzzleTip = document.getElementById('puzzleTipInput')?.value || '';
+
+  const values = Array.from(container.children)
+    .filter(el => !el.getAttribute('data-keysig'))
+    .map(el => ({
+      answer: el.getAttribute('data-value') || "",
+      notePosition: (el.getAttribute('data-shape') === 'text') ? null : (parseInt(el.getAttribute('data-selected')) || null),
+      noteShape: el.getAttribute('data-shape'),
+      label: el.querySelector('[data-bovenruimte] input') ? el.querySelector('[data-bovenruimte] input').value : "",
+      repeatMark: el.getAttribute('data-omdraai') === "true"
+    }));
+  const jsonObj = {
+    puzzleName,
+    puzzleAnswer,
+    puzzleLevel,
+    puzzleKey,
+    puzzleTip,
+    blocks: values
+  };
+  window._currentPuzzelJSON = JSON.stringify(jsonObj, null, 2);
+}
+
+function moveSelected(dir) {
+  if (!selectedBox) return;
+  const boxes = Array.from(container.children).filter(el => !el.getAttribute('data-keysig'));
+  const index = boxes.indexOf(selectedBox);
+  const newIndex = index + dir;
+  if (newIndex < 0 || newIndex >= boxes.length) return;
+  const refBox = boxes[newIndex];
+  container.removeChild(selectedBox);
+  container.insertBefore(selectedBox, dir === 1 ? refBox.nextSibling : refBox);
+  updateJSON();
+  selectBox(selectedBox);
+}
+
+function removeSelected() {
+  if (selectedBox) {
+    container.removeChild(selectedBox);
+    selectedBox = null;
+    updateJSON();
+  }
+}
+
+function downloadJSON() {
+  updateJSON();
+  const puzzleName = document.getElementById('puzzleNameInput')?.value || '';
+  let filename = puzzleName.trim() ? puzzleName.trim().replace(/[^a-zA-Z0-9_-]/g, "_") + ".json" : "puzzel.json";
+  const dataStr = window._currentPuzzelJSON;
+  const blob = new Blob([dataStr], {type: "application/json"});
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+function loadJSONFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const obj = JSON.parse(e.target.result);
+      document.getElementById('puzzleNameInput').value = obj.puzzleName || '';
+      document.getElementById('puzzleAnswerInput').value = obj.puzzleAnswer || '';
+      document.getElementById('puzzleLevelInput').value = obj.puzzleLevel || '';
+      document.getElementById('puzzleKeyInput').value = obj.puzzleKey || '';
+      document.getElementById('puzzleTipInput').value = obj.puzzleTip || '';
+      if(obj.blocks && Array.isArray(obj.blocks)){
+        loadBlocksFromJSON(obj.blocks);
+      } else {
+        loadBlocksFromJSON(Array.isArray(obj) ? obj : []);
+      }
+      addKeySignatureBlock();
+    } catch (err) {
+      alert("Kon bestand niet laden (geen geldig JSON)");
+    }
+  };
+  reader.readAsText(file);
+}
+
+function loadBlocksFromJSON(arr) {
+  Array.from(container.children)
+    .filter(el => !el.getAttribute('data-keysig'))
+    .forEach(el => container.removeChild(el));
+  selectedBox = null;
+  arr.forEach(item => {
+    const box = document.createElement('div');
+    box.className = "notenblokkie bg-transparent p-1 flex border-4 flex-col items-center border border-transparent";
+    box.setAttribute('data-id', idCounter++);
+    box.setAttribute('data-selected', (item.notePosition === null ? 'null' : item.notePosition));
+    box.setAttribute('data-shape', item.noteShape || 'circle');
+    box.setAttribute('data-textonstaff', item.label || '');
+    box.setAttribute('data-omdraai', item.repeatMark ? 'true' : 'false');
+    box.setAttribute('data-value', item.answer || '');
+
+    const staff = document.createElement('div');
+    staff.className = "relative h-48 w-14 bg-transparent mb-3 cursor-pointer";
+    staff.style.overflow = "visible";
+    staff.innerHTML = getNotenbalkSVG();
+
+    const marker = document.createElement('div');
+    marker.className = "notemove absolute left-1/2 -translate-x-1/2 translate-y-1/2 w-5 h-5 bg-black border-2 border-black z-10 flex items-center justify-center rounded-full hidden select-none pointer-events-none";
+    marker.setAttribute('data-marker', '');
+    staff.appendChild(marker);
+
+    const accidental = document.createElement('div');
+    accidental.className = "absolute left-[32%] -translate-x-full translate-y-[45%] z-10 pointer-events-none select-none hidden";
+    accidental.setAttribute('data-accidental', '');
+    staff.appendChild(accidental);
+
+    if (item.notePosition !== null && !isNaN(item.notePosition)) {
+      let shape = item.noteShape || 'circle';
+      marker.classList.remove('hidden');
+      marker.classList.toggle('rounded-full', ['circle','sharp','flat'].includes(shape));
+      marker.classList.toggle('rounded-none', shape === 'square');
+      marker.style.bottom = `${positionOffsets[item.notePosition]}%`;
+      accidental.classList.remove('hidden');
+      accidental.style.bottom = `calc(${positionOffsets[item.notePosition]}%)`;
+      if (shape === 'sharp') {
+        accidental.innerHTML = getSharpSVG("w-8 h-8 sm:w-11 sm:h-11");
+      } else if (shape === 'flat') {
+        accidental.innerHTML = getFlatSVG("w-8 h-8 sm:w-11 sm:h-11");
+      } else {
+        accidental.innerHTML = '';
+        accidental.classList.add('hidden');
+      }
+      marker.innerHTML = '';
+      const letter = document.createElement('span');
+      letter.className = 'notenletter';
+      letter.innerText = noteNames[item.notePosition];
+      marker.appendChild(letter);
+      if (shape !== 'text') {
+        const stick = document.createElement('div');
+        stick.className = 'notenstok';
+        stick.style.height = '36px';
+        if (item.notePosition <= stickMiddle) {
+          stick.style.left = '88%';
+          stick.style.right = '-9px';
+          stick.style.transform = 'translateY(-100%)';
+        } else {
+          stick.style.left = '-2px';
+          stick.style.right = 'auto';
+          stick.style.transform = 'translateY(0%) rotate(180deg)';
+        }
+        stick.style.top = '50%';
+        marker.appendChild(stick);
+      }
+    }
+
+    box.appendChild(staff);
+
+    const bovenruimte = document.createElement('div');
+    bovenruimte.className = "h-8 flex items-center justify-center w-full";
+    bovenruimte.setAttribute('data-bovenruimte', '');
+
+    const staffInput = document.createElement('input');
+    staffInput.type = "text";
+    staffInput.maxLength = 12;
+    staffInput.className = (item.label && item.label.trim() !== "") ? "input-onstaff filled" : "input-onstaff";
+    staffInput.value = item.label || "";
+    staffInput.addEventListener('input', function () {
+      box.setAttribute('data-textonstaff', staffInput.value);
+      updateTextOnStaffAppearance(staffInput);
+      updateJSON();
+    });
+    bovenruimte.appendChild(staffInput);
+    box.appendChild(bovenruimte);
+
+    const omdraaiDiv = document.createElement('div');
+    omdraaiDiv.setAttribute('data-omdraai', '');
+    omdraaiDiv.className = "omdraai-icoon";
+    if (item.repeatMark) {
+      omdraaiDiv.innerHTML = `
+        <svg width="28" height="28" viewBox="0 0 28 28">
+          <path d="M5 13c0-3.87 3.13-7 7-7h4" stroke="black" stroke-width="2" fill="none"/>
+          <polygon points="15,3 19,6 15,9" fill="black"/>
+          <path d="M23 15c0 3.87-3.13 7-7 7h-4" stroke="black" stroke-width="2" fill="none"/>
+          <polygon points="13,25 9,22 13,19" fill="black"/>
+        </svg>
+      `;
+    } else {
+      omdraaiDiv.innerHTML = `<span class="omdraai-placeholder"></span>`;
+    }
+    box.appendChild(omdraaiDiv);
+
+    const input = document.createElement('input');
+    input.setAttribute('maxlength', 5);
+    input.className = "w-14 border-2 border-black rounded text-center text-base outline-none mt-2 bg-white";
+    input.value = item.answer || "";
+    input.addEventListener('input', () => {
+      box.setAttribute('data-value', input.value);
+      updateJSON();
+    });
+    box.appendChild(input);
+
+    box.addEventListener('click', function(e) {
+      e.stopPropagation();
+      selectBox(box);
+    });
+    staff.addEventListener('mousedown', e => {
+      if(selectedTool === 'hand') return;
+      handleStaffClick(e, box, staff);
+    });
+
+    container.appendChild(box);
+    updateTextOnStaffAppearance(staffInput);
+  });
+  updateJSON();
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  addKeySignatureBlock();
+  addTextbox();
+  selectTool('circle');
+});
+</script>
 </body>
-
-    <script src="canvas.js"></script>
-    <script src="getdata.js"></script>
-    <script src="musicgrid.js"></script>
-
 </html>
