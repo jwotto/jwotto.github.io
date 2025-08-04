@@ -1,0 +1,80 @@
+.notemove {
+  transition: bottom 0.14s cubic-bezier(.4,.2,.4,1), background 0.12s;
+}
+.notenstok {
+  position: absolute;
+  width: 4px;
+  background: black;
+  top: 50%;
+  z-index: 20;
+  transition: transform 0.12s;
+}
+.notenletter {
+  position: relative;
+  z-index: 22;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  width: 100%;
+  line-height: 20px;
+  font-size: 13px;
+  pointer-events: none;
+  user-select: none;
+}
+.toolbar-btn svg text, .toolbar-btn svg rect, .toolbar-btn svg circle {
+  transition: fill 0.15s, stroke 0.15s;
+}
+.notenbalk-svg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+.notenblokkie {
+  background: transparent;
+  border-radius: 0.5rem;
+  z-index: 2;
+}
+.input-onstaff {
+  width: 56px;
+  height: 32px;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  border: 2px solid #d1d5db;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  text-align: center;
+  background: white;
+  color: black;
+  outline: none;
+  font-weight: normal;
+  transition: border .15s, font-weight .15s;
+  position: relative;
+  z-index: 10;
+  display: block;
+}
+.input-onstaff.filled {
+  border-color: #000;
+  font-weight: bold;
+}
+.border-blue-500 {
+  border-color: #3b82f6 !important;
+  border-width: 4px !important;
+}
+.omdraai-icoon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 28px;
+  width: 100%;
+  margin: 4px 0;
+}
+.omdraai-placeholder {
+  min-height: 28px;
+  height: 28px;
+  width: 28px;
+  display: inline-block;
+}
