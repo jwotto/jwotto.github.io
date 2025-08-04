@@ -276,7 +276,7 @@ function handleStaffClick(event, box, staff) {
     if (shape !== 'text' && shape !== 'square') {
       const stick = document.createElement('div');
       stick.className = 'notenstok';
-      stick.style.height = '36px';
+      stick.style.height = '39px';
       if (closestIndex <= stickMiddle) {
         stick.style.left = '88%';
         stick.style.right = '-9px';
@@ -516,7 +516,7 @@ function loadBlocksFromJSON(arr) {
       if (shape !== 'text' && shape !== 'square') {
         const stick = document.createElement('div');
         stick.className = 'notenstok';
-        stick.style.height = '36px';
+        stick.style.height = '39px';
         if (item.notePosition <= stickMiddle) {
           stick.style.left = '88%';
           stick.style.right = '-9px';
